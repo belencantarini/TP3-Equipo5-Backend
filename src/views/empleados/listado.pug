@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  h2 Lista de Empleados
+  a(href="/empleados/nuevo") Nuevo empleado
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+
+  if empleados && empleados.length
+    ul
+      each e in empleados
+        li
+          strong #{e.nombre} #{e.apellido}
+          |  – DNI: #{e.dni}, Email: #{e.email}, Rol: #{e.rol}, Área: #{e.area} - 
+          
+          a(href=`/empleados/editar/${e.id}`) Editar
+          form(action=`/empleados/eliminar/${e.id}?_method=DELETE`, method="post")
+            button(type="submit") Eliminar
+
+  else
+    p No hay empleados registrados.

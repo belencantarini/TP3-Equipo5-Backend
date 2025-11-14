@@ -1,0 +1,25 @@
+{
+  "name": "tp2-equipo5",
+  "version": "1.0.0",
+  "description": "Proyecto Backend - TP2 Equipo 5",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Equipo 5",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.19.1",
+    "pug": "^3.0.3",
+    "uuid": "^13.0.0"
+  }
+}

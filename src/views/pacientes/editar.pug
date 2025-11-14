@@ -1,0 +1,58 @@
+extends ../layout
+
+block content
+  h2 Editar Paciente
+  p ID: #{paciente && paciente.id}
+  a(href="/pacientes") Volver
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+
+  if paciente
+    form(action=`/pacientes/editar/${paciente.id}`, method="post")
+      div
+        label(for="nombre") Nombre
+        br
+        input#nombre(type="text", name="nombre", value=paciente.nombre, required)
+
+      div
+        label(for="apellido") Apellido
+        br
+        input#apellido(type="text", name="apellido", value=paciente.apellido, required)
+
+      div
+        label(for="dni") DNI
+        br
+        input#dni(type="text", name="dni", value=paciente.dni, required)
+
+      div
+        label(for="email") Email
+        br
+        input#email(type="email", name="email", value=paciente.email, required)
+
+      div
+        label(for="telefono") Teléfono
+        br
+        input#telefono(type="text", name="telefono", value=paciente.telefono, required)
+
+      div
+        label(for="obraSocial") Obra Social
+        br
+        input#obraSocial(type="text", name="obraSocial", value=paciente.obraSocial, required)
+
+      div
+        label(for="nroAfiliado") Nº Afiliado
+        br
+        input#nroAfiliado(type="text", name="nroAfiliado", value=paciente.nroAfiliado, required)
+
+      div
+        label(for="fechaNacimiento") Fecha de Nacimiento
+        br
+        input#fechaNacimiento(type="date", name="fechaNacimiento", value=paciente.fechaNacimiento, required)
+
+      br
+      button(type="submit") Actualizar
+  else
+    p Paciente no encontrado

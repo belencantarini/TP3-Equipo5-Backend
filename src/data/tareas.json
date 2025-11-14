@@ -1,0 +1,93 @@
+[
+    {
+        "id": "e0828848-54b4-40fd-aac5-6cf30186c639",
+        "area": "Stock de Insumos",
+        "tipo": "Reposición de materiales",
+        "estado": "pendiente",
+        "prioridad": "media",
+        "fechaInicio": "2025-09-22T12:56",
+        "fechaFin": "",
+        "empleadoId": "",
+        "pacienteId": "",
+        "proveedor": null,
+        "observaciones": ""
+    },
+    {
+        "id": "b273baa2-b87b-4b95-8693-33df9990ab00",
+        "area": "Facturación",
+        "tipo": "",
+        "estado": "pendiente",
+        "prioridad": "media",
+        "fechaInicio": "2025-09-20T13:30",
+        "fechaFin": "",
+        "empleadoId": "",
+        "pacienteId": "",
+        "proveedor": null,
+        "observaciones": ""
+    },
+    {
+        "id": "bd2ff4ab-e0e5-4d53-99ec-25e421e5dc7e",
+        "area": "Administración de Turnos",
+        "tipo": null,
+        "estado": "en progreso",
+        "prioridad": "baja",
+        "fechaInicio": "2025-09-21T10:49:23.825Z",
+        "fechaFin": null,
+        "empleadoId": null,
+        "pacienteId": null,
+        "proveedor": null,
+        "observaciones": null
+    },
+    {
+        "id": "2e1ff3dc-38ac-474b-81e8-a94e216af057",
+        "area": "Atención Médica",
+        "tipo": "",
+        "estado": "en progreso",
+        "prioridad": "media",
+        "fechaInicio": "2025-09-21T14:07",
+        "fechaFin": "",
+        "empleadoId": "3",
+        "pacienteId": "2",
+        "proveedor": null,
+        "observaciones": "hola"
+    },
+    {
+        "id": "08082e56-d162-41f3-bb45-e248192154c3",
+        "area": "Atención Médica",
+        "tipo": "Otra opcion",
+        "estado": "pendiente",
+        "prioridad": "media",
+        "fechaInicio": "2025-09-21T20:19",
+        "fechaFin": "2025-09-21T11:54",
+        "empleadoId": "",
+        "pacienteId": "",
+        "proveedor": null,
+        "observaciones": ""
+    },
+    {
+        "id": "b694b4b7-7330-4ab6-a523-84f7026581ce",
+        "area": "Stock de Insumos",
+        "tipo": "Carga de nuevo insumo al stock",
+        "estado": "en progreso",
+        "prioridad": "media",
+        "fechaInicio": "2025-09-21T11:55:26.089Z",
+        "fechaFin": null,
+        "empleadoId": "3",
+        "pacienteId": "5",
+        "proveedor": null,
+        "observaciones": null
+    },
+    {
+        "id": "7763d979-f720-4e1b-9a89-e713828417ed",
+        "area": "Atención Médica",
+        "tipo": "bueno",
+        "estado": "pendiente",
+        "prioridad": "media",
+        "fechaInicio": "2025-09-21T12:05",
+        "fechaFin": "",
+        "empleadoId": "",
+        "pacienteId": "",
+        "proveedor": "medicus SA",
+        "observaciones": ""
+    }
+]

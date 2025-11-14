@@ -1,0 +1,74 @@
+[
+    {
+        "id": "1758381772311",
+        "nombre": "Alcohol en gel",
+        "categoria": "instrumental",
+        "stock": "50",
+        "unidad": "unidad",
+        "fechaVencimiento": "2026-04-02",
+        "estado": "vigente"
+    },
+    {
+        "id": "1758391652894",
+        "nombre": "gasa",
+        "categoria": "descartable",
+        "stock": "5",
+        "unidad": "caja",
+        "fechaVencimiento": "2025-10-09",
+        "estado": "agotado"
+    },
+    {
+        "id": "1758394760502",
+        "nombre": "aguja",
+        "categoria": "descartable",
+        "stock": "10",
+        "unidad": "unidad",
+        "fechaVencimiento": "2025-10-09",
+        "estado": "agotado"
+    },
+    {
+        "id": "1758457966540",
+        "nombre": "guantes ",
+        "categoria": "descartable",
+        "stock": 10,
+        "unidad": "caja",
+        "fechaVencimiento": "2025-10-09",
+        "estado": "vigente"
+    },
+    {
+        "id": "1758467132561",
+        "nombre": "paracetamol",
+        "categoria": "medicamento",
+        "stock": "5",
+        "unidad": "frasco",
+        "fechaVencimiento": "2025-10-12",
+        "estado": "vigente"
+    },
+    {
+        "id": "1758450599443",
+        "nombre": "guantes",
+        "categoria": "descartable",
+        "stock": "4",
+        "unidad": "caja",
+        "fechaVencimiento": "2025-10-21",
+        "estado": "vigente"
+    },
+    {
+        "id": "1761406051828",
+        "nombre": "aguja",
+        "categoria": "descartable",
+        "stock": 0,
+        "unidad": "frasco",
+        "fechaVencimiento": "2025-10-28",
+        "estado": "agotado"
+    },
+    {
+        "id": "1761406382791",
+        "nombre": "pastillas",
+        "categoria": "descartable",
+        "stock": 0,
+        "unidad": "frasco",
+        "fechaVencimiento": "2025-10-28",
+        "estado": "agotado"
+    }
+]

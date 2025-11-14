@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+  h2 Nuevo Empleado
+  a(href="/empleados") Volver
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+
+  form(action="/empleados/nuevo", method="post")
+    div
+      label(for="nombre") Nombre
+      br
+      input#nombre(type="text", name="nombre", placeholder="Nombre", value=(empleado && empleado.nombre) ? empleado.nombre : "", required)
+
+    div
+      label(for="apellido") Apellido
+      br
+      input#apellido(type="text", name="apellido", placeholder="Apellido", value=(empleado && empleado.apellido) ? empleado.apellido : "", required)
+
+    div
+      label(for="dni") DNI
+      br
+      input#dni(type="text", name="dni", placeholder="DNI", value=(empleado && empleado.dni) ? empleado.dni : "", required)
+
+    div
+      label(for="email") Email
+      br
+      input#email(type="email", name="email", placeholder="Email", value=(empleado && empleado.email) ? empleado.email : "", required)
+
+    div
+      label(for="rol") Rol
+      br
+      input#rol(type="text", name="rol", placeholder="Rol", value=(empleado && empleado.rol) ? empleado.rol : "", required)
+
+    div
+      label(for="area") Área
+      br
+      input#area(type="text", name="area", placeholder="Área", value=(empleado && empleado.area) ? empleado.area : "", required)
+
+    br
+    button(type="submit") Guardar

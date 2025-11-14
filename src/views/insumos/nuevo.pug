@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+  h2 Nuevo Insumo
+  a(href="/insumos") Volver
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+
+  form(action="/insumos/nuevo", method="post")
+    div
+      label(for="nombre") Nombre
+      br
+      input#nombre(type="text", name="nombre", placeholder="Nombre", value=(insumo && insumo.nombre) ? insumo.nombre : "", required)
+
+    div
+      label(for="categoria") Categoría
+      br
+      select(name="categoria", required)
+        each cat in categorias
+          option(value=cat selected=(insumo.categoria === cat))= cat
+      
+
+    div
+      label(for="stock") Stock
+      br
+      input#stock(type="number", name="stock", placeholder="Stock", value=(insumo && insumo.stock) ? insumo.stock : "", required)
+
+    div
+      label(for="unidad") Unidad
+      br
+      select(name="unidad", required)
+        each u in unidades
+          option(value=u selected=(insumo.unidad === u))= u
+
+      
+    div
+      label(for="fechaVencimiento") Fecha de vencimiento
+      br
+      input#fechaVencimiento(type="date", name="fechaVencimiento", value=(insumo && insumo.fechaVencimiento) ? insumo.fechaVencimiento : "", required)
+
+    br
+    button(type="submit") Guardar

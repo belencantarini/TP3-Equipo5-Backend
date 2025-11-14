@@ -1,0 +1,169 @@
+extends ../layout
+
+block content
+  h2 Editar Tarea Mongo
+  p ID: #{tarea && tarea._id}
+  a(href="/tareasmongo") Volver
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+
+  if tarea
+    form(action=`/tareasmongo/editar/${tarea._id}?_method=PUT`, method="post")
+      div
+        label(for="area") Área: 
+          br
+          select#area(name="area", required)
+            option(value="" disabled) Seleccione un área
+            each a in areas
+              option(value=a selected=(tarea && tarea.area == a) ? true : false)= a
+
+      div
+        label(for="tipoTarea") Tipo (opcional)
+        br
+        select#tipoTarea(name="")
+        input#otroTipo(type="text" placeholder="Escribe el tipo aquí" style="display:none;")
+        input#tipo(type="hidden" name="tipo")
+
+      div
+        label(for="estado") Estado
+        br
+        select#estado(name="estado", required)
+          option(value="" disabled) Seleccione un estado
+          each est in estados 
+            option(value=est selected=(tarea && tarea.estado == est) ? true : false)= est
+
+      div
+        label(for="prioridad") Prioridad
+        br
+        select#prioridad(name="prioridad", required)
+          option(value="" disabled) Seleccione una prioridad
+          each pri in prioridades 
+            option(value=pri selected=(tarea && tarea.prioridad == pri) ? true : false)= pri  
+
+      div
+        label(for="fechaInicio") Fecha Inicio (opcional)
+        br
+        input#fechaInicio(type="datetime-local", name="fechaInicio", value=(tarea && tarea.fechaInicio) ? new Date(tarea.fechaInicio).toISOString().slice(0,16) : "")
+
+      div
+        label(for="fechaFin") Fecha Fin (opcional)
+        br
+        input#fechaFin(type="datetime-local", name="fechaFin", value=(tarea && tarea.fechaFin) ? new Date(tarea.fechaFin).toISOString().slice(0,16) : "")
+
+      div
+        label(for="empleadoId") Empleado (opcional)
+        br
+        select#empleadoId(name="empleadoId")
+          option(value="" selected) Ninguno
+          each e in empleados
+            option(value=e._id selected=(tarea && tarea.empleadoId == e._id) ? true : false)= "Id: " + e._id + " - " + e.nombre + " " + e.apellido
+
+      div
+        label(for="pacienteId") Paciente (opcional)
+        br
+        select#pacienteId(name="pacienteId")
+          option(value="" selected) Ninguno
+          each p in pacientes
+            option(value=p._id selected=(tarea && tarea.pacienteId == p._id) ? true : false)= "Id: " + p._id + " - " + p.nombre + " " + p.apellido
+
+      div
+        label(for="proveedor") Proveedor (opcional)
+        br
+        textarea#proveedor(name="proveedor", placeholder="Proveedor")= (tarea && tarea.proveedor) ? tarea.proveedor : ""
+
+
+      div
+        label(for="observaciones") Observaciones (opcional)
+        br
+        textarea#observaciones(name="observaciones", placeholder="Observaciones")= (tarea && tarea.observaciones) ? tarea.observaciones : ""
+      br
+      button(type="submit") Guardar cambios
+
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        const areaSelect = document.getElementById('area');
+        const tipoSelect = document.getElementById('tipoTarea');
+        const otroTipoInput = document.getElementById('otroTipo');
+        const tipoHiddenInput = document.getElementById('tipo');
+        const form = document.querySelector('form');
+        
+        const tiposValidosPorArea = !{JSON.stringify(tiposValidosPorArea)};
+        const tarea = !{JSON.stringify(tarea)};
+        
+        const populateTipos = (selectedArea, selectedTipo) => {
+          const tipos = tiposValidosPorArea[selectedArea] || [];
+          let tipoFound = false;
+          
+          tipoSelect.innerHTML = '';
+          
+          const defaultOption = document.createElement('option');
+          defaultOption.value = "";
+          defaultOption.textContent = "Seleccione un tipo";
+          tipoSelect.appendChild(defaultOption);
+
+          tipos.forEach(tipo => {
+            const option = document.createElement('option');
+            option.value = tipo;
+            option.textContent = tipo;
+            if (tipo === selectedTipo) {
+              option.selected = true;
+              tipoFound = true;
+            }
+            tipoSelect.appendChild(option);
+          });
+          
+          const otroOption = document.createElement('option');
+          otroOption.value = "Otro";
+          otroOption.textContent = "Otro";
+          if (selectedTipo && !tipoFound) {
+            otroOption.selected = true;
+          }
+          tipoSelect.appendChild(otroOption);
+
+          if (selectedTipo && !tipoFound) {
+            otroTipoInput.style.display = 'block';
+            otroTipoInput.value = selectedTipo;
+            tipoHiddenInput.value = selectedTipo;
+          }
+        };
+
+        areaSelect.addEventListener('change', function() {
+            populateTipos(this.value, null);
+            otroTipoInput.style.display = 'none';
+            tipoHiddenInput.value = '';
+        });
+
+        tipoSelect.addEventListener('change', function() {
+          if (this.value === 'Otro') {
+            otroTipoInput.style.display = 'block';
+            otroTipoInput.required = true;
+            tipoHiddenInput.value = '';
+          } else {
+            otroTipoInput.style.display = 'none';
+            otroTipoInput.value = '';
+            otroTipoInput.required = false;
+            tipoHiddenInput.value = this.value;
+          }
+        });
+        
+        otroTipoInput.addEventListener('input', function() {
+          tipoHiddenInput.value = this.value;
+        });
+
+        form.addEventListener('submit', function(event) {
+          if (tipoSelect.value === 'Otro' && otroTipoInput.value.trim() === '') {
+            event.preventDefault();
+            alert('Por favor, escribe el nombre del nuevo tipo.');
+          }
+        });
+
+        if (tarea && tarea.area) {
+          areaSelect.value = tarea.area;
+          populateTipos(tarea.area, tarea.tipo);
+        } else {
+          populateTipos(areaSelect.value, null);
+        }
+      });

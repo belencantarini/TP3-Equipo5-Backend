@@ -1,0 +1,129 @@
+/*
+ * --------------------------------
+ * ESTILOS GENERALES
+ * --------------------------------
+ */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    /* Asegura que el contenido ocupe toda la altura de la ventana */
+    min-height: 100vh;
+    /* 🔑 CLAVE 1: Configurar body como contenedor Flex */
+    display: flex;
+    flex-direction: column; 
+}
+
+header {
+    background-color: #007bff; /* Azul primario */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 10px;
+    font-size: 1.8em;
+}
+
+/*
+ * --------------------------------
+ * ESTILOS DE NAVEGACIÓN (nav.nav-principal)
+ * --------------------------------
+ */
+nav.nav-principal {
+    background-color: #0056b3; /* Un azul más oscuro */
+    padding: 0;
+}
+
+nav.nav-principal ul {
+    /* Convierte la lista en una fila horizontal */
+    display: flex;
+    /* Elimina las viñetas */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* Distribuye el espacio de manera uniforme */
+    justify-content: flex-start;
+    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea si no hay espacio */
+}
+
+nav.nav-principal li {
+    /* Define un poco de espacio alrededor de cada elemento del menú */
+    margin: 0 5px;
+}
+
+nav.nav-principal a {
+    /* Hace que los enlaces se comporten como bloques para un mejor área de clic */
+    display: block;
+    padding: 8px 15px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border-radius: 4px;
+}
+
+nav.nav-principal a:hover {
+    background-color: #004085; /* Color de fondo al pasar el ratón */
+}
+
+/*
+ * --------------------------------
+ * ESTILOS DE SEPARADORES (DATOS LOCALES / MONGO DB)
+ * --------------------------------
+ */
+span.nav-separator {
+    display: block;
+    padding: 8px 10px;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: default;
+    border-radius: 4px;
+    margin-left: 10px; /* Separación extra del elemento anterior */
+}
+
+/* Estilos específicos para el separador de datos locales */
+.label-local {
+    background-color: #28a745; /* Verde para Datos Locales */
+    color: white;
+}
+
+/* Estilos específicos para el separador de Mongo DB */
+.label-mongo {
+    background-color: #ffc107; /* Amarillo/Naranja para Mongo DB */
+    color: #333;
+}
+
+/*
+ * --------------------------------
+ * ESTILOS DE CONTENIDO Y PIE DE PÁGINA
+ * --------------------------------
+ */
+main {
+    padding: 20px;
+    /* 🔑 CLAVE 2: Permite que 'main' crezca y empuje el footer hacia abajo */
+    flex-grow: 1; 
+    /* min-height anterior fue eliminado */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    font-size: 0.8em;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: auto ya no es necesario */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px 0;
+}

@@ -1,0 +1,71 @@
+extends ../layout
+
+block content
+  h2 Lista de Tareas Mongo
+  a(href="/tareasmongo/nuevo") Nueva tarea
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+  
+  form(action="/tareasmongo", method="get")
+    div
+      label(for="area") Área:
+      select(name="area")
+        option(value="") Todas
+        each a in areas
+          option(value=a selected=(filtros.area==a)?true:false)= a
+
+    div
+      label(for="empleadoId") Empleado:
+      select(name="empleadoId")
+        option(value="") Todos
+        each e in empleados
+          option(value=e._id selected=(filtros.empleadoId==e._id)?true:false)= "Id: " + e._id + " - " + e.nombre + " " + e.apellido
+
+    div
+      label(for="pacienteId") Paciente:
+      select(name="pacienteId")
+        option(value="") Todos
+        each p in pacientes
+          option(value=p._id selected=(filtros.pacienteId==p._id)?true:false)= "Id: " + p._id + " - " + p.nombre + " " + p.apellido
+    
+    div
+      label(for="estado") Estado:
+      select(name="estado")
+        option(value="") Todos
+        each est in estados
+          option(value=est selected=(filtros.estado==est)?true:false)= est
+
+    div
+      label(for="prioridad") Prioridad:
+      select(name="prioridad")
+        option(value="") Todas
+        each pri in prioridades
+          option(value=pri selected=(filtros.prioridad==pri)?true:false)= pri
+
+    div
+      label(for="fecha") Fecha:
+      input(type="date" name="fecha" value=(filtros.fecha || ''))
+
+    br
+    button(type="submit") Filtrar
+    button(type="button", onclick="location.href='/tareasmongo'") Limpiar filtros
+
+  br
+
+
+  h2 Listado de Tareas Mongo
+  
+
+  if tareas && tareas.length
+    ul
+      each t in tareas
+        li
+          | Área: #{t.area}, Tipo: #{t.tipo}, Estado: #{t.estado}, Prioridad: #{t.prioridad}, Fecha Inicio: #{t.fechaInicio}, Fecha Fin: #{t.fechaFin || 'N/A'}, Empleado ID: #{t.empleadoId || 'N/A'}, Paciente ID: #{t.pacienteId || 'N/A'}, Proveedor: #{t.proveedor || 'N/A'}, Observaciones: #{t.observaciones || 'N/A'} -
+        button(type="button", onclick=`location.href='/tareasmongo/editar/${t._id}'`) Editar
+        form(action=`/tareasmongo/eliminar/${t._id}?_method=DELETE`, method="post", style="display:inline")
+          button(type="submit") Eliminar
+  else
+    p No hay tareas registradas.

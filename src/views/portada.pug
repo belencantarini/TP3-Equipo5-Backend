@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h2.text-center ¡Bienvenido a la Clínica Médica "DiagnoCare"! 🏥
+  
+  hr
+  
+  // --- SECCIÓN DATOS LOCALES (Archivos JSON) ---
+  h3 💾 Administración (Datos Locales - JSON)
+  p.text-muted Use esta sección para administrar las entidades que aún usan los archivos JSON.
+  
+  ul
+    li
+      a(href="/empleados") Empleados
+    li
+      a(href="/pacientes") Pacientes
+    li
+      a(href="/tareas") Tareas
+    li
+      a(href="/insumos") Insumos
+
+  hr
+
+  // --- SECCIÓN MONGODB (Base de Datos Persistente) ---
+  h3 ☁️ Administración (Base de Datos MongoDB)
+  p.text-muted Use esta sección para administrar las entidades migradas a MongoDB Atlas.
+
+  ul
+    li
+      a(href="/tareasmongo") Tareas MongoDB
+
+
+  hr

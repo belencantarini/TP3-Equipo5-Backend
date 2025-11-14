@@ -1,0 +1,23 @@
+{
+  "roles": ["administrador", "médico", "recepcionista", "encargado de stock"],
+  "categorias": ["medicamento", "descartable", "instrumental"],
+  "unidades": ["unidad", "caja", "frasco"],
+  "estados": ["vigente", "vencido", "agotado"],
+  "areas": ["Administración de Turnos", "Stock de Insumos", "Atención Médica", "Facturación"],
+  "tiposValidosPorArea": {
+    "Administración de Turnos": [
+      "Alta de turno para paciente",
+      "Reprogramación o cancelación de cita",
+      "Confirmación de asistencia",
+      "Asignación de médico a turno"
+    ],
+    "Stock de Insumos": [
+      "Carga de nuevo insumo al stock",
+      "Control de vencimientos",
+      "Reposición de materiales",
+      "Baja por uso o descarte"
+    ]     
+  },
+  "estadosValidos": ["pendiente", "en progreso", "finalizada"],
+  "prioridadesValidas": ["baja", "media", "alta"]
+}

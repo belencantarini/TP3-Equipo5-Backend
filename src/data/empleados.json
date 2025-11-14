@@ -1,0 +1,56 @@
+[
+    {
+        "id": "1",
+        "nombre": "Dr. Juan",
+        "apellido": "Pérez",
+        "dni": "12345678",
+        "email": "juan.perez@clinica.com",
+        "rol": "médico",
+        "area": "Atención Médica"
+    },
+    {
+        "id": "2",
+        "nombre": "María",
+        "apellido": "Gómez",
+        "dni": "87654321",
+        "email": "maria.gomez@clinica.com",
+        "rol": "recepcionista",
+        "area": "Administración de Turnos"
+    },
+    {
+        "id": "3",
+        "nombre": "Ana",
+        "apellido": "López",
+        "dni": "98765432",
+        "email": "ana.lopez@clinica.com",
+        "rol": "encargado de stock",
+        "area": "Stock de Insumos"
+    },
+    {
+        "id": "4",
+        "nombre": "Pedro",
+        "apellido": "Ramírez",
+        "dni": "23456789",
+        "email": "pedro.ramirez@clinica.com",
+        "rol": "administrador",
+        "area": "Facturación"
+    },
+    {
+        "id": "5",
+        "nombre": "Dr. Carlos",
+        "apellido": "Sánchez",
+        "dni": "34567890",
+        "email": "carlos.sanchez@clinica.com",
+        "rol": "médico",
+        "area": "Atención Médica"
+    },
+    {
+        "id": "01af5e28-35ea-4a99-8057-fca2457d88c8",
+        "nombre": "Sofia",
+        "apellido": "Garcia",
+        "dni": "25423433",
+        "email": "sofia@garcia",
+        "rol": "médico",
+        "area": "Atención Médica"
+    }
+]

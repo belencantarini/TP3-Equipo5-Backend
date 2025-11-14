@@ -1,0 +1,55 @@
+extends ../layout
+
+block content
+  h2 Editar Insumo
+  p  ID: #{insumo && insumo.id}
+  a(href="/insumos") Volver
+  br
+  br
+
+  if error
+    p(style="color:red")= error
+
+  if insumo
+    form(action=`/insumos/editar/${insumo.id}`, method="post")
+      div
+        label(for="nombre") Nombre
+        br
+        input#nombre(type="text", name="nombre", value=insumo.nombre, required)
+
+      div
+        label(for="categoria") Categoría
+        br
+        select(name="categoria", required)
+          each cat in categorias
+            option(value=cat selected=(insumo.categoria === cat))= cat
+
+      div
+        label(for="stock") Stock
+        br
+        input#stock(type="number", name="stock", value=insumo.stock, required)
+
+      div
+        label(for="unidad") Unidad
+        br
+        select(name="unidad", required)
+          each u in unidades
+            option(value=u selected=(insumo.unidad === u))= u
+
+      div
+        label(for="fechaVencimiento") Fecha de vencimiento
+        br
+        input#fechaVencimiento(type="date", name="fechaVencimiento", value=insumo.fechaVencimiento, required)
+
+      div
+        label(for="estado") Estado
+        br
+        select#estado(name="estado", required)
+          each opcion in estados
+            option(value=opcion selected=(insumo.estado === opcion))= opcion
+
+      br
+      button(type="submit") Actualizar
+
+  else
+    p Insumo no encontrado

@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title= titulo || 'Clínica Médica DiagnoCare'
+    link(rel="stylesheet", href="/css/styles.css")
+  body
+    header
+      h1 Clínica Médica DiagnoCare
+      
+      nav.nav-principal
+        ul
+          // 🏠 INICIO
+          li: a(href="/") Inicio
+          
+          // 💾 SECCIÓN JSON / DATOS LOCALES
+          li: span.nav-separator.label-local - DATOS LOCALES JSON:
+          li: a(href="/empleados") Empleados
+          li: a(href="/pacientes") Pacientes
+          li: a(href="/tareas") Tareas
+          li: a(href="/insumos") Insumos
+          
+          // ☁️ SECCIÓN MONGO DB
+          li: span.nav-separator.label-mongo - MIGRACION A MONGO DB:
+          li: a(href="/tareasmongo") Tareas MongoDB
+            
+    hr
+    main
+      block content
+    
+    hr
+    footer
+      p © 2025 Clínica Médica DiagnoCare - Grupo 5
