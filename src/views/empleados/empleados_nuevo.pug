@@ -1,0 +1,67 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    h2 Nuevo Empleado
+
+    a.btn.btn-link.px-0(href="/empleados") Volver al listado
+
+    if error
+      .alert.alert-danger.mt-3= error
+
+    form(method="POST", action="/empleados/nuevo")
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label Nombre
+            input.form-control(type="text", name="nombre", required, value=empleado.nombre || "")
+        
+        .col-md-6
+          .mb-3
+            label.form-label Teléfono
+            input.form-control(type="text", name="telefono", required, value=empleado.telefono || "")
+
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label Apellido
+            input.form-control(type="text", name="apellido", required, value=empleado.apellido || "")
+        
+        .col-md-6
+          .mb-3
+            label.form-label DNI
+            input.form-control(type="text", name="dni", required, value=empleado.dni || "")
+
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label Email
+            input.form-control(type="email", name="email", required, value=empleado.email || "")
+
+        .col-md-6
+          .mb-3
+            label.form-label Área
+            select.form-select(name="area", required)
+              option(value="") Seleccionar...
+              each a in areas
+                option(value=a selected=(empleado.area === a))= a
+
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label Rol
+            select.form-select(name="rol", required)
+              option(value="") Seleccionar...
+              each r in roles
+                option(value=r selected=(empleado.rol === r))= r
+
+      .mt-4.d-flex.gap-3
+        a.btn.btn-secondary(href="/empleados") Volver
+        button.btn.btn-primary(type="submit") Guardar
+
+
+
+
+
+
+

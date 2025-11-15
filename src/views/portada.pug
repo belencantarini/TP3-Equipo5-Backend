@@ -1,33 +1,92 @@
 extends layout
 
 block content
-  h2.text-center ¡Bienvenido a la Clínica Médica "DiagnoCare"! 🏥
-  
-  hr
-  
-  // --- SECCIÓN DATOS LOCALES (Archivos JSON) ---
-  h3 💾 Administración (Datos Locales - JSON)
-  p.text-muted Use esta sección para administrar las entidades que aún usan los archivos JSON.
-  
-  ul
-    li
-      a(href="/empleados") Empleados
-    li
-      a(href="/pacientes") Pacientes
-    li
-      a(href="/tareas") Tareas
-    li
-      a(href="/insumos") Insumos
+  .container.mt-4
+    h2.text-center.mb-3 Sistema de Gestión Clínica Integral
+    p.text-center.text-muted Panel principal de administración
 
-  hr
+    // Tarjetas de resumen
+    .row.g-3.mb-4
+      .col-md-4
+        .card.shadow-sm.border-0
+          .card-body.text-center
+            h5.card-title Empleados
+            p.mb-1.text-muted Cantidad total
+            h3.mb-0
+              span#contador-empleados 0
+      .col-md-4
+        .card.shadow-sm.border-0
+          .card-body.text-center
+            h5.card-title Pacientes
+            p.mb-1.text-muted Cantidad total
+            h3.mb-0
+              span#contador-pacientes 0
+      .col-md-4
+        .card.shadow-sm.border-0
+          .card-body.text-center
+            h5.card-title Tareas Activas
+            p.mb-1.text-muted En curso
+            h3.mb-0
+              span#contador-tareas 0
 
-  // --- SECCIÓN MONGODB (Base de Datos Persistente) ---
-  h3 ☁️ Administración (Base de Datos MongoDB)
-  p.text-muted Use esta sección para administrar las entidades migradas a MongoDB Atlas.
+    // Accesos rápidos
+    .row.g-3
+      .col-md-4
+        .card.border-0.shadow-sm
+          .card-body.text-center
+            h5 Empleados
+            p.text-muted Gestión del personal de la clínica
+            a.btn.btn-primary.mt-2(href="/empleados") Ingresar
+      .col-md-4
+        .card.border-0.shadow-sm
+          .card-body.text-center
+            h5 Pacientes
+            p.text-muted Administración de pacientes
+            a.btn.btn-primary.mt-2(href="/pacientes") Ingresar
+      .col-md-4
+        .card.border-0.shadow-sm
+          .card-body.text-center
+            h5 Tareas
+            p.text-muted Control de tareas internas
+            a.btn.btn-primary.mt-2(href="/tareasmongo") Ingresar
 
-  ul
-    li
-      a(href="/tareasmongo") Tareas MongoDB
+    hr.mt-4
+    p.text-center.text-muted.mb-0
+      | Sistema interno de gestión – Clínica Médica DiagnoCare
+
+  // Script para actualizar contadores desde las APIs
+  script.
+    async function cargarContadores() {
+      try {
+        const [resEmp, resPac, resTar] = await Promise.all([
+          fetch('/api/empleadosmongo'),
+          fetch('/api/pacientesmongo'),
+          fetch('/api/tareasmongo')
+        ]);
+
+        const empleados = await resEmp.json();
+        const pacientes = await resPac.json();
+        const tareas = await resTar.json();
+
+        document.getElementById('contador-empleados').textContent =
+          Array.isArray(empleados) ? empleados.length : 0;
+
+        document.getElementById('contador-pacientes').textContent =
+          Array.isArray(pacientes) ? pacientes.length : 0;
+
+        const activas = Array.isArray(tareas)
+          ? tareas.filter(t => t.estado && t.estado.toLowerCase() !== 'completada').length
+          : 0;
+
+        document.getElementById('contador-tareas').textContent = activas;
+      } catch (e) {
+        console.error('Error al cargar contadores:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarContadores);
 
 
-  hr
+
+
+

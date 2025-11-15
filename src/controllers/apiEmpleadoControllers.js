@@ -1,105 +1,116 @@
-const Empleado = require('../models/Empleado')
-const { leerData, escribirData } = require('../lib/fs')
+const { leerData, escribirData } = require('../lib/fs');
+const Empleado = require('../models/Empleado');  // Clase Empleado (la de JSON)
 
-async function crearEmpleado(req, res) {
-    try {
-        const { nombre, apellido, dni, email, rol, area } = req.body
-
-        // Data
-        const empleado = new Empleado(nombre, apellido, dni, email, rol, area)
-        const empleados = await leerData("empleados")
-
-        // Combrobar DNI
-        if (empleados.some(e => e.dni === empleado.dni)) {
-            return res.status(400).json({
-                error: "DNI registrado previamente"
-            })
-        }
-
-        // Guardar
-        empleados.push(empleado)
-        await escribirData("empleados", empleados)
-
-        return res.status(201).json(empleado)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-}
-
+// 🔹 LISTAR TODOS LOS EMPLEADOS
 async function listarEmpleados(req, res) {
     try {
-        const empleados = await leerData("empleados")
-        res.status(200).json(empleados)
+        const empleados = await leerData("empleados");
+        res.status(200).json(empleados);
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
 }
 
+// 🔹 OBTENER UN EMPLEADO POR ID
 async function obtenerEmpleado(req, res) {
     try {
-        const { id } = req.params
+        const { id } = req.params;
+        const empleados = await leerData("empleados");
+        const empleado = empleados.find(e => e.id === id);
 
-        // Data
-        const empleados = await leerData("empleados")
-        const empleado = empleados.find(e => e.id === id)
-
-        // Combrobar empleado
         if (!empleado) {
-            return res.status(404).json({ error: 'Empleado no encontrado' })
+            return res.status(404).json({ error: 'Empleado no encontrado' });
         }
 
-        return res.json(empleado)
+        res.json(empleado);
     } catch (error) {
-        return res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
 }
 
+// 🔹 CREAR EMPLEADO
+async function crearEmpleado(req, res) {
+    try {
+        const { nombre, apellido, dni, email, rol, area } = req.body;
+
+        const empleados = await leerData("empleados");
+
+        // Evitar DNI duplicado
+        if (empleados.some(e => e.dni === dni)) {
+            return res.status(400).json({ error: "DNI registrado previamente" });
+        }
+
+        const nuevoEmpleado = new Empleado(nombre, apellido, dni, email, rol, area);
+
+        empleados.push(nuevoEmpleado);
+        await escribirData("empleados", empleados);
+
+        res.status(201).json(nuevoEmpleado);
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// 🔹 ACTUALIZAR EMPLEADO
 async function actualizarEmpleado(req, res) {
     try {
-        const { id } = req.params
+        const { id } = req.params;
+        const { nombre, apellido, dni, email, rol, area } = req.body;
 
-        // Data
-        const empleados = await leerData("empleados")
-        const index = empleados.findIndex(e => e.id === id)
+        const empleados = await leerData("empleados");
+        const index = empleados.findIndex(e => e.id === id);
 
-        // Comprobar empleado
         if (index === -1) {
-            return res.status(404).json({ error: 'Empleado no encontrado' })
+            return res.status(404).json({ error: 'Empleado no encontrado' });
         }
 
-        const { nombre, apellido, dni, email, rol, area } = req.body
+        empleados[index] = {
+            ...empleados[index],
+            nombre,
+            apellido,
+            dni,
+            email,
+            rol,
+            area
+        };
 
-        // Guardar
-        empleados[index] = { ...empleados[index], nombre, apellido, dni, email, rol, area }
-        await escribirData("empleados", empleados)
+        await escribirData("empleados", empleados);
 
-        res.status(200).json(empleados[index])
+        res.status(200).json(empleados[index]);
+
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
 }
 
+// 🔹 ELIMINAR EMPLEADO
 async function eliminarEmpleado(req, res) {
     try {
-        const { id } = req.params
+        const { id } = req.params;
 
-        // Data
-        const empleados = await leerData("empleados")
-        const index = empleados.findIndex(e => e.id === id)
+        const empleados = await leerData("empleados");
+        const index = empleados.findIndex(e => e.id === id);
 
-        // Comprobar empleado
         if (index === -1) {
-            return res.status(404).json({ error: 'Empleado no encontrado' })
+            return res.status(404).json({ error: 'Empleado no encontrado' });
         }
 
-        // Guardar
-        const eliminado = empleados.splice(index, 1)
-        await escribirData("empleados", empleados)
+        const eliminado = empleados.splice(index, 1);
+        await escribirData("empleados", empleados);
 
-        res.status(200).json(eliminado)
+        res.status(200).json(eliminado[0]);
+
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
 }
 
-module.exports = { listarEmpleados, crearEmpleado, obtenerEmpleado, actualizarEmpleado, eliminarEmpleado }
+module.exports = {
+    listarEmpleados,
+    obtenerEmpleado,
+    crearEmpleado,
+    actualizarEmpleado,
+    eliminarEmpleado
+};
+

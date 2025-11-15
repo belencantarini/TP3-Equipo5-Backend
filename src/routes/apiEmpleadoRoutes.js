@@ -1,13 +1,22 @@
-const express = require('express')
-const { listarEmpleados, crearEmpleado, actualizarEmpleado, eliminarEmpleado, obtenerEmpleado } = require('../controllers/apiEmpleadoControllers')
-const { validarApiEmpleado } = require('../middlewares/validarApiEmpleado')
+const express = require('express');
+const router = express.Router();
 
-const router = express.Router()
+const {
+    listarEmpleados,
+    crearEmpleado,
+    obtenerEmpleado,
+    actualizarEmpleado,
+    eliminarEmpleado
+} = require('../controllers/apiEmpleadoControllers');
 
-router.get('/', listarEmpleados)
-router.post('/', validarApiEmpleado, crearEmpleado)
-router.put('/:id', validarApiEmpleado, actualizarEmpleado)
-router.delete('/:id', eliminarEmpleado)
-router.get('/:id', obtenerEmpleado)
+const { validarApiEmpleado } = require('../middlewares/validarApiEmpleado');
 
-module.exports = router
+// Rutas API REST
+router.get('/', listarEmpleados);
+router.get('/:id', obtenerEmpleado);
+router.post('/', validarApiEmpleado, crearEmpleado);
+router.put('/:id', validarApiEmpleado, actualizarEmpleado);
+router.delete('/:id', eliminarEmpleado);
+
+module.exports = router;
+

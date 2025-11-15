@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 
-// Esquema de Empleado
 const empleadoSchema = new mongoose.Schema({
-  nombre: { type: String, required: true, trim: true },
-  apellido: { type: String, required: true, trim: true },
+  nombre: { type: String, required: true },
+  apellido: { type: String, required: true },
   dni: { type: String, required: true, unique: true },
-  email: { type: String, required: true, lowercase: true, trim: true },
-  rol: { type: String, required: true, enum: ['Médico', 'Administrativo', 'Enfermero', 'Otro'] },
-  area: { type: String, required: true, trim: true },
+  email: { type: String, required: true },
+  telefono: { type: String, required: true },
+  rol: { type: String, required: true },
+  area: { type: String, required: true },
+  
+  // Campo que usa tu tabla
   activo: { type: Boolean, default: true }
 }, { timestamps: true });
 

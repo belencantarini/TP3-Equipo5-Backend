@@ -1,14 +1,17 @@
-const express = require('express')
-const empleadoControllers = require('../controllers/empleadoControllers')
-const { validarEmpleado } = require('../middlewares/validarEmpleado')
+// src/routes/empleadoRoutes.js
+const express = require('express');
+const router = express.Router();
 
-const router = express.Router()
+const controlador = require('../controllers/empleadoMongoControllerPug');
+const { validarEmpleado } = require('../middlewares/validarEmpleado');
 
-router.get('/', empleadoControllers.listarEmpleados)
-router.get('/nuevo', empleadoControllers.formularioNuevoEmpleado)
-router.post('/nuevo', validarEmpleado('nuevo'), empleadoControllers.crearEmpleado)
-router.get('/editar/:id', empleadoControllers.formularioEditarEmpleado)
-router.post('/editar/:id', validarEmpleado('editar'), empleadoControllers.actualizarEmpleado)
-router.delete('/eliminar/:id', empleadoControllers.eliminarEmpleado)
+router.get('/', controlador.listarEmpleados);
+router.get('/nuevo', controlador.mostrarFormularioNuevo);
+router.post('/nuevo', validarEmpleado('nuevo'), controlador.crearEmpleado);
 
-module.exports = router
+router.get('/editar/:id', controlador.mostrarFormularioEditar);
+router.post('/editar/:id', validarEmpleado('editar'), controlador.actualizarEmpleado);
+
+router.post('/eliminar/:id', controlador.eliminarEmpleado);
+
+module.exports = router;

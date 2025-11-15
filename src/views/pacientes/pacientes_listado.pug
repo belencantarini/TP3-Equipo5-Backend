@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    .d-flex.justify-content-between.align-items-center.mb-3
+      h2 Listado de Pacientes
+      a.btn.btn-primary(href="/pacientes/nuevo") Nuevo Paciente
+
+    a.btn.btn-link.px-0(href="/") Volver al inicio
+
+    if error
+      .alert.alert-danger.mt-3= error
+
+    if pacientes && pacientes.length
+      table.table.table-hover.align-middle.mt-3
+        thead.table-light
+          tr
+            th Nombre
+            th Apellido
+            th DNI
+            th Email
+            th.text-end Acciones
+        tbody
+          each p in pacientes
+            tr
+              td= p.nombre
+              td= p.apellido
+              td= p.dni
+              td= p.email
+              td.text-end
+                a.btn.btn-sm.btn-outline-primary.me-2(href=`/pacientes/editar/${p._id}`) Editar
+                form.d-inline(method="POST", action=`/pacientes/eliminar/${p._id}`)
+                  button.btn.btn-sm.btn-outline-danger(
+                    type="submit",
+                    onclick="return confirm('¿Seguro que deseas eliminar este paciente?');"
+                  ) Eliminar
+    else
+      .alert.alert-info.mt-3 No hay pacientes registrados.
+
+
