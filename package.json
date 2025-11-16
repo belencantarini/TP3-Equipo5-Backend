@@ -1,7 +1,7 @@
 {
-  "name": "tp2-equipo5",
+  "name": "tp3-equipo5",
   "version": "1.0.0",
-  "description": "Proyecto Backend - TP2 Equipo 5",
+  "description": "Proyecto Backend - TP3 Equipo 5",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
