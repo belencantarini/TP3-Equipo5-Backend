@@ -1,17 +1,21 @@
-// src/routes/empleadoRoutes.js
 const express = require('express');
 const router = express.Router();
 
 const controlador = require('../controllers/empleadoMongoControllerPug');
 const { validarEmpleado } = require('../middlewares/validarEmpleado');
+const { protegerRuta, requiereRol } = require('../middlewares/auth');
 
-router.get('/', controlador.listarEmpleados);
-router.get('/nuevo', controlador.mostrarFormularioNuevo);
-router.post('/nuevo', validarEmpleado('nuevo'), controlador.crearEmpleado);
+// Solo ADMIN puede gestionar empleados
+router.get('/', protegerRuta, requiereRol("administrador"), controlador.listarEmpleados);
 
-router.get('/editar/:id', controlador.mostrarFormularioEditar);
-router.post('/editar/:id', validarEmpleado('editar'), controlador.actualizarEmpleado);
+router.get('/nuevo', protegerRuta, requiereRol("administrador"), controlador.mostrarFormularioNuevo);
 
-router.post('/eliminar/:id', controlador.eliminarEmpleado);
+router.post('/nuevo', protegerRuta, requiereRol("administrador"), validarEmpleado('nuevo'), controlador.crearEmpleado);
+
+router.get('/editar/:id', protegerRuta, requiereRol("administrador"), controlador.mostrarFormularioEditar);
+
+router.post('/editar/:id', protegerRuta, requiereRol("administrador"), validarEmpleado('editar'), controlador.actualizarEmpleado);
+
+router.post('/eliminar/:id', protegerRuta, requiereRol("administrador"), controlador.eliminarEmpleado);
 
 module.exports = router;

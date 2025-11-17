@@ -4,60 +4,148 @@ block content
   .container.mt-4
     h2 Nuevo Empleado
 
-    a.btn.btn-link.px-0(href="/empleados") Volver al listado
-
     if error
-      .alert.alert-danger.mt-3= error
+      .alert.alert-danger= error
 
-    form(method="POST", action="/empleados/nuevo")
+    form(method="POST" action="/empleados/nuevo")
+
       .row
         .col-md-6
           .mb-3
             label.form-label Nombre
-            input.form-control(type="text", name="nombre", required, value=empleado.nombre || "")
-        
-        .col-md-6
-          .mb-3
-            label.form-label Teléfono
-            input.form-control(type="text", name="telefono", required, value=empleado.telefono || "")
+            input.form-control(
+              type="text"
+              name="nombre"
+              autocomplete="off"
+              required
+              value=formData && formData.nombre ? formData.nombre : ""
+            )
 
-      .row
         .col-md-6
           .mb-3
             label.form-label Apellido
-            input.form-control(type="text", name="apellido", required, value=empleado.apellido || "")
-        
+            input.form-control(
+              type="text"
+              name="apellido"
+              autocomplete="off"
+              required
+              value=formData && formData.apellido ? formData.apellido : ""
+            )
+
+      .row
         .col-md-6
           .mb-3
             label.form-label DNI
-            input.form-control(type="text", name="dni", required, value=empleado.dni || "")
+            input.form-control(
+              type="text"
+              name="dni"
+              autocomplete="off"
+              required
+              value=formData && formData.dni ? formData.dni : ""
+            )
 
-      .row
         .col-md-6
           .mb-3
-            label.form-label Email
-            input.form-control(type="email", name="email", required, value=empleado.email || "")
+            label.form-label Teléfono
+            input.form-control(
+              type="text"
+              name="telefono"
+              autocomplete="off"
+              value=formData && formData.telefono ? formData.telefono : ""
+            )
 
-        .col-md-6
-          .mb-3
-            label.form-label Área
-            select.form-select(name="area", required)
-              option(value="") Seleccionar...
-              each a in areas
-                option(value=a selected=(empleado.area === a))= a
+      .mb-3
+        label.form-label Email
+        input.form-control(
+          type="email"
+          name="email"
+          autocomplete="off"
+          required
+          value=formData && formData.email ? formData.email : ""
+        )
 
-      .row
-        .col-md-6
-          .mb-3
-            label.form-label Rol
-            select.form-select(name="rol", required)
-              option(value="") Seleccionar...
-              each r in roles
-                option(value=r selected=(empleado.rol === r))= r
+      // -----------------------
+      // SELECT ÁREA
+      // -----------------------
+      .mb-3
+        label.form-label Área
+        select.form-select(name="area" id="areaSelect" required)
+          option(value="" disabled selected=!(formData && formData.area)) Seleccionar área
+          each a in areas
+            option(
+              value=a
+              selected=(formData && formData.area === a)
+            )= a
 
-      .mt-4.d-flex.gap-3
+      // -----------------------
+      // SELECT ROL (DINÁMICO)
+      // -----------------------
+      .mb-3
+        label.form-label Rol
+        select.form-select(name="rol" id="rolSelect" required)
+          option(value="" disabled selected=!(formData && formData.rol)) Seleccionar rol
+          // opciones dinámicas generadas por JS
+
+      .mb-3
+        label.form-label Contraseña
+        .input-group
+          input.form-control(
+            type="password"
+            name="password"
+            id="pw"
+            autocomplete="new-password"
+            required
+          )
+          button.btn.btn-outline-secondary(type="button" id="togglePw") 👁
+
+      .d-flex.gap-2
         a.btn.btn-secondary(href="/empleados") Volver
         button.btn.btn-primary(type="submit") Guardar
+
+  // -----------------------
+  // SCRIPT PARA ROLES DINÁMICOS
+  // -----------------------
+  script.
+    const rolesDisponibles = {
+      "Administración de Turnos": ["administrador", "recepcionista"],
+      "Atención Médica": ["médico"],
+      "Stock de Insumos": ["encargado de stock"],
+      "Facturación": ["administrador", "recepcionista"]
+    };
+
+    const areaSelect = document.getElementById("areaSelect");
+    const rolSelect = document.getElementById("rolSelect");
+
+    function cargarRoles() {
+      const area = areaSelect.value;
+      const roles = rolesDisponibles[area] || [];
+
+      rolSelect.innerHTML = '<option value="" disabled selected>Seleccionar rol</option>';
+
+      roles.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r;
+        opt.textContent = r;
+        if ("#{formData && formData.rol}" === r) opt.selected = true;
+        rolSelect.appendChild(opt);
+      });
+    }
+
+    areaSelect.addEventListener("change", cargarRoles);
+
+    // Inicializa si venimos de un error
+    if ("#{formData && formData.area}") {
+      cargarRoles();
+    }
+
+    // Mostrar/ocultar contraseña
+    document.getElementById("togglePw").onclick = () => {
+      const pw = document.getElementById("pw");
+      pw.type = pw.type === "password" ? "text" : "password";
+    };
+
+
+
 
 
 

@@ -1,60 +1,67 @@
+// controllers/empleadoMongoControllerPug.js
 const Empleado = require('../models/empleadoMongoModel');
+const bcrypt = require('bcrypt');
 const { leerData } = require('../lib/fs');
 
 async function cargarDatos() {
-  const roles = await leerData('roles');
-  const areas = await leerData('areas');
-  return { roles, areas };
+  return {
+    roles: await leerData('roles'),
+    areas: await leerData('areas')
+  };
 }
 
-// LISTAR
+/* LISTAR */
 async function listarEmpleados(req, res) {
   try {
     const empleados = await Empleado.find().lean();
     res.render('empleados/empleados_listado', {
-      titulo: 'Listado de empleados',
-      empleados
+      titulo: "Listado de empleados",
+      empleados,
+      usuario: req.session.usuario
     });
-  } catch (error) {
-    res.status(500).render('empleados/empleados_listado', {
-      titulo: 'Listado de empleados',
-      error: 'Error al obtener empleados'
+  } catch (err) {
+    res.render('empleados/empleados_listado', {
+      titulo: "Listado de empleados",
+      error: "Error al cargar empleados"
     });
   }
 }
 
-// NUEVO GET
+/* FORM NUEVO */
 async function mostrarFormularioNuevo(req, res) {
   const datos = await cargarDatos();
   res.render('empleados/empleados_nuevo', {
-    titulo: 'Nuevo empleado',
-    empleado: {},
+    titulo: "Nuevo empleado",
+    formData: {},       // 👈 VACÍO = formulario en blanco
     ...datos
   });
 }
 
-// NUEVO POST
+/* CREAR */
 async function crearEmpleado(req, res) {
   const datos = await cargarDatos();
   try {
-    const empleado = {
-      ...req.body,
-      activo: true        // 🔥 obligatorio para que tu tabla funcione
-    };
+    const hashed = await bcrypt.hash(req.body.password, 10);
 
-    await Empleado.create(empleado);
+    await Empleado.create({
+      ...req.body,
+      password: hashed,
+      activo: true
+    });
+
     res.redirect('/empleados');
+
   } catch (error) {
-    res.status(400).render('empleados/empleados_nuevo', {
-      titulo: 'Nuevo empleado',
-      error: 'Error al crear empleado',
-      empleado: req.body,
+    res.render('empleados/empleados_nuevo', {
+      titulo: "Nuevo empleado",
+      error: error.message,
+      formData: req.body,  // 👈 Devuelve lo que el usuario había escrito
       ...datos
     });
   }
 }
 
-// EDITAR GET
+/* FORM EDITAR */
 async function mostrarFormularioEditar(req, res) {
   try {
     const empleado = await Empleado.findById(req.params.id).lean();
@@ -63,41 +70,47 @@ async function mostrarFormularioEditar(req, res) {
     const datos = await cargarDatos();
 
     res.render('empleados/empleados_editar', {
-      titulo: 'Editar empleado',
-      empleado,
+      titulo: "Editar empleado",
+      formData: empleado,
       ...datos
     });
-  } catch (error) {
-    res.redirect('/empleados');
-  }
-}
 
-// EDITAR POST
-async function actualizarEmpleado(req, res) {
-  const datos = await cargarDatos();
-  try {
-    await Empleado.findByIdAndUpdate(req.params.id, req.body, { runValidators: true });
-    res.redirect('/empleados');
-  } catch (error) {
-    const empleado = { ...req.body, _id: req.params.id };
-
-    res.status(400).render('empleados/empleados_editar', {
-      titulo: 'Editar empleado',
-      error: 'Error al actualizar empleado',
-      empleado,
-      ...datos
-    });
-  }
-}
-
-// ELIMINAR
-async function eliminarEmpleado(req, res) {
-  try {
-    await Empleado.findByIdAndDelete(req.params.id);
-    res.redirect('/empleados');
   } catch {
     res.redirect('/empleados');
   }
+}
+
+/* ACTUALIZAR */
+async function actualizarEmpleado(req, res) {
+  const datos = await cargarDatos();
+
+  try {
+    let updateData = { ...req.body };
+
+    if (req.body.password && req.body.password.trim() !== "") {
+      updateData.password = await bcrypt.hash(req.body.password, 10);
+    } else {
+      delete updateData.password;
+    }
+
+    await Empleado.findByIdAndUpdate(req.params.id, updateData);
+
+    res.redirect('/empleados');
+
+  } catch (error) {
+    res.render('empleados/empleados_editar', {
+      titulo: "Editar empleado",
+      error: error.message,
+      formData: { ...req.body, _id: req.params.id },
+      ...datos
+    });
+  }
+}
+
+/* ELIMINAR */
+async function eliminarEmpleado(req, res) {
+  await Empleado.findByIdAndDelete(req.params.id);
+  res.redirect('/empleados');
 }
 
 module.exports = {
@@ -108,3 +121,5 @@ module.exports = {
   actualizarEmpleado,
   eliminarEmpleado
 };
+
+

@@ -4,60 +4,89 @@ block content
   .container.mt-4
     h2 Editar Empleado
 
-    a.btn.btn-link.px-0(href="/empleados") Volver al listado
-
     if error
-      .alert.alert-danger.mt-3= error
+      .alert.alert-danger= error
 
-    form(method="POST", action=`/empleados/editar/${empleado._id}`)
+    form(method="POST" action=`/empleados/editar/${formData._id}`)
+
       .row
         .col-md-6
           .mb-3
             label.form-label Nombre
-            input.form-control(type="text", name="nombre", required, value=empleado.nombre || "")
+            input.form-control(type="text" name="nombre" value=formData.nombre required)
+
+        .col-md-6
+          .mb-3
+            label.form-label Apellido
+            input.form-control(type="text" name="apellido" value=formData.apellido required)
+
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label DNI
+            input.form-control(type="text" name="dni" value=formData.dni required)
 
         .col-md-6
           .mb-3
             label.form-label Teléfono
-            input.form-control(type="text", name="telefono", required, value=empleado.telefono || "")
+            input.form-control(type="text" name="telefono" value=formData.telefono)
 
-      .row
-        .col-md-6
-          .mb-3
-            label.form-label Apellido
-            input.form-control(type="text", name="apellido", required, value=empleado.apellido || "")
+      .mb-3
+        label.form-label Email
+        input.form-control(type="email" name="email" value=formData.email required)
 
-        .col-md-6
-          .mb-3
-            label.form-label DNI
-            input.form-control(type="text", name="dni", required, value=empleado.dni || "")
+      .mb-3
+        label.form-label Área
+        select.form-select(name="area" id="areaSelect" required)
+          each a in areas
+            option(value=a selected=(formData.area===a))= a
 
-      .row
-        .col-md-6
-          .mb-3
-            label.form-label Email
-            input.form-control(type="email", name="email", required, value=empleado.email || "")
-        
-        .col-md-6
-          .mb-3
-            label.form-label Área
-            select.form-select(name="area", required)
-              option(value="") Seleccionar...
-              each a in areas
-                option(value=a selected=(empleado.area === a))= a
+      .mb-3
+        label.form-label Rol
+        select.form-select(name="rol" id="rolSelect" required)
+          // opciones dinámicas por JS
 
-      .row
-        .col-md-6
-          .mb-3
-            label.form-label Rol
-            select.form-select(name="rol", required)
-              option(value="") Seleccionar...
-              each r in roles
-                option(value=r selected=(empleado.rol === r))= r
+      .mb-3
+        label.form-label Nueva contraseña (opcional)
+        input.form-control(type="password" name="password" id="pw2")
 
-      .mt-4.d-flex.gap-3
+      .d-flex.gap-2
         a.btn.btn-secondary(href="/empleados") Volver
         button.btn.btn-primary(type="submit") Guardar cambios
+
+  script.
+    const rolesDisponibles = {
+      "Administración de Turnos": ["administrador", "recepcionista"],
+      "Atención Médica": ["médico"],
+      "Stock de Insumos": ["encargado de stock"],
+      "Facturación": ["administrador", "recepcionista"]
+    };
+
+    const areaSelect = document.getElementById("areaSelect");
+    const rolSelect  = document.getElementById("rolSelect");
+
+    function cargarRolesEditar() {
+      const area = areaSelect.value;
+      const roles = rolesDisponibles[area] || [];
+
+      rolSelect.innerHTML = "";
+
+      roles.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r;
+        opt.textContent = r;
+        if ("#{formData.rol}" === r) opt.selected = true;
+        rolSelect.appendChild(opt);
+      });
+    }
+
+    areaSelect.addEventListener("change", cargarRolesEditar);
+
+    cargarRolesEditar(); // inicializar selección
+
+
+
+
 
 
 

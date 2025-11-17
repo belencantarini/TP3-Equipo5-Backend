@@ -4,46 +4,42 @@ block content
   .container.mt-4
     h2 Nuevo Paciente
 
-    a.btn.btn-link.px-0(href="/pacientes") Volver al listado
-
     if error
-      .alert.alert-danger.mt-3= error
+      .alert.alert-danger= error
 
-    form(method="POST", action="/pacientes/nuevo")
+    form(action="/pacientes/nuevo" method="POST")
       .row
         .col-md-6
           .mb-3
             label.form-label Nombre
-            input.form-control(type="text", name="nombre", required, value=paciente.nombre || "")
+            input.form-control(type="text" name="nombre" required value=paciente.nombre || "")
 
         .col-md-6
           .mb-3
             label.form-label Apellido
-            input.form-control(type="text", name="apellido", required, value=paciente.apellido || "")
+            input.form-control(type="text" name="apellido" required value=paciente.apellido || "")
 
       .row
         .col-md-6
           .mb-3
             label.form-label DNI
-            input.form-control(type="text", name="dni", required, value=paciente.dni || "")
+            input.form-control(type="text" name="dni" required value=paciente.dni || "")
 
         .col-md-6
           .mb-3
-            label.form-label Email
-            input.form-control(type="email", name="email", required, value=paciente.email || "")
+            label.form-label Teléfono
+            input.form-control(type="text" name="telefono" value=paciente.telefono || "")
 
-      .row
-        .col-md-12
-          .mb-3
-            label.form-label Obra Social
-            select.form-select(name="obra_social", required)
-              option(value="") Seleccionar...
-              each os in obras_sociales
-                option(value=os selected=(paciente.obra_social === os))= os
+      .mb-3
+        label.form-label Email
+        input.form-control(type="email" name="email" value=paciente.email || "")
 
-      .mt-4.d-flex.gap-3
+      .d-flex.gap-2
         a.btn.btn-secondary(href="/pacientes") Volver
         button.btn.btn-primary(type="submit") Guardar
+
+
+
 
 
 

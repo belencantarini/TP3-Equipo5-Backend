@@ -1,7 +1,6 @@
 const Paciente = require('../models/pacienteMongoModel');
 const { leerData } = require('../lib/fs');
 
-// cargar obras sociales desde JSON
 async function cargarObrasSociales() {
   return await leerData('obras_sociales');
 }
@@ -15,7 +14,7 @@ async function listarPacientes(req, res) {
   });
 }
 
-// NUEVO (GET)
+// NUEVO GET
 async function mostrarFormularioNuevo(req, res) {
   const obras_sociales = await cargarObrasSociales();
   res.render('pacientes/pacientes_nuevo', {
@@ -25,7 +24,7 @@ async function mostrarFormularioNuevo(req, res) {
   });
 }
 
-// CREAR (POST)
+// NUEVO POST
 async function crearPaciente(req, res) {
   const obras_sociales = await cargarObrasSociales();
   try {
@@ -34,14 +33,14 @@ async function crearPaciente(req, res) {
   } catch (error) {
     res.render('pacientes/pacientes_nuevo', {
       titulo: 'Nuevo Paciente',
-      error: 'Error al crear paciente',
+      error: error.message,
       paciente: req.body,
       obras_sociales
     });
   }
 }
 
-// EDITAR (GET)
+// EDITAR GET
 async function mostrarFormularioEditar(req, res) {
   const paciente = await Paciente.findById(req.params.id).lean();
   const obras_sociales = await cargarObrasSociales();
@@ -53,7 +52,7 @@ async function mostrarFormularioEditar(req, res) {
   });
 }
 
-// ACTUALIZAR (POST)
+// EDITAR POST
 async function actualizarPaciente(req, res) {
   const obras_sociales = await cargarObrasSociales();
   try {
@@ -62,7 +61,7 @@ async function actualizarPaciente(req, res) {
   } catch (error) {
     res.render('pacientes/pacientes_editar', {
       titulo: 'Editar Paciente',
-      error: 'Error al actualizar paciente',
+      error: error.message,
       paciente: { ...req.body, _id: req.params.id },
       obras_sociales
     });

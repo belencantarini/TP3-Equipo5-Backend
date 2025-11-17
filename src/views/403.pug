@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1.text-danger.text-center Acceso denegado
+  h4.text-center= mensaje || "No tenés permisos para ingresar a esta sección."
+  .text-center
+    a.btn.btn-secondary.mt-3(href="/") Volver al inicio

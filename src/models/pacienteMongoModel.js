@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
+const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/;
+
 const pacienteSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  apellido: { type: String, required: true },
-  dni: { type: String, required: true, unique: true },
+  nombre: { type: String, required: true, match: soloLetras },
+  apellido: { type: String, required: true, match: soloLetras },
+  dni: { type: String, required: true, unique: true, match: /^\d{7,8}$/ },
   email: { type: String },
-  telefono: { type: String },
+  telefono: { type: String, match: /^\d+$/ },
   direccion: { type: String },
   fechaNacimiento: { type: Date },
   obraSocial: { type: String },
