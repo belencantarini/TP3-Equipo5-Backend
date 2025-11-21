@@ -1,7 +1,7 @@
 const Paciente = require('../models/pacienteMongoModel');
 const Empleado = require('../models/empleadoMongoModel');
 const Tarea = require('../models/TareaMongo');
-const Insumo = require('../models/insumoMongoModel');
+const Insumo = require('../models/InsumoMongo');
 
 async function mostrarDashboard(req, res) {
   try {
