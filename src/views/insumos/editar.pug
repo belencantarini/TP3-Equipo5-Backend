@@ -2,54 +2,48 @@ extends ../layout
 
 block content
   h2 Editar Insumo
-  p  ID: #{insumo && insumo.id}
-  a(href="/insumos") Volver
+  p ID: #{insumo && insumo._id}
+  a.btn.btn-secondary(href="/insumos") Volver
   br
   br
 
   if error
-    p(style="color:red")= error
+    p.text-danger= error
 
   if insumo
-    form(action=`/insumos/editar/${insumo.id}`, method="post")
-      div
+    form(action=`/insumos/editar/${insumo._id}`, method="post", class="formulario")
+      .form-group
         label(for="nombre") Nombre
-        br
-        input#nombre(type="text", name="nombre", value=insumo.nombre, required)
+        input#nombre.form-control(type="text", name="nombre", value=insumo.nombre, required)
 
-      div
+      .form-group
         label(for="categoria") Categoría
-        br
-        select(name="categoria", required)
+        select.form-control(name="categoria", required)
           each cat in categorias
             option(value=cat selected=(insumo.categoria === cat))= cat
 
-      div
+      .form-group
         label(for="stock") Stock
-        br
-        input#stock(type="number", name="stock", value=insumo.stock, required)
+        input#stock.form-control(type="number", name="stock", value=insumo.stock, required)
 
-      div
+      .form-group
         label(for="unidad") Unidad
-        br
-        select(name="unidad", required)
+        select.form-control(name="unidad", required)
           each u in unidades
             option(value=u selected=(insumo.unidad === u))= u
 
-      div
+      .form-group
         label(for="fechaVencimiento") Fecha de vencimiento
-        br
-        input#fechaVencimiento(type="date", name="fechaVencimiento", value=insumo.fechaVencimiento, required)
+        - const fecha = insumo && insumo.fechaVencimiento ? new Date(insumo.fechaVencimiento).toISOString().slice(0,10) : ""
+        input#fechaVencimiento.form-control(type="date", name="fechaVencimiento", value=fecha, required)
 
-      div
+      .form-group
         label(for="estado") Estado
-        br
-        select#estado(name="estado", required)
+        select#estado.form-control(name="estado", required)
           each opcion in estados
             option(value=opcion selected=(insumo.estado === opcion))= opcion
 
       br
-      button(type="submit") Actualizar
-
+      button.btn.btn-primary(type="submit") Guardar cambios
   else
     p Insumo no encontrado

@@ -5,7 +5,7 @@ const insumoSchema = new mongoose.Schema({
   categoria: { type: String, required: true, trim: true },
   stock: { type: Number, required: true, trim: true },
   unidad: { type: String, required: true, trim: true },
-  fechaVencimiento: { type: Date },
+  fechaVencimiento: { type: Date, required: true },
   estado: { type: String, required: true, enum: ['vigente', 'vencido', 'agotado'], trim: true },
   activo: { type: Boolean, default: true }
 }, { timestamps: true });

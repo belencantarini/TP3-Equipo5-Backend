@@ -1,12 +1,16 @@
 extends ../layout
 
-block content 
-  h2  Lista de Insumos
-  a(href="/insumos/nuevo") Nuevo insumo
+block content
+  .d-flex.justify-content-between.align-items-center.mb-3
+    h2 Lista de Insumos
+    a.btn.btn-primary(href="/insumos/nuevo") Nuevo Insumo
+
+  if error
+    p.text-danger= error
 
   if insumos.length
-    table(border="1")
-      thead
+    table.table.table-bordered.table-hover
+      thead.table-light
         tr
           th Nombre
           th Categoría
@@ -14,20 +18,22 @@ block content
           th Unidad
           th Fecha de vencimiento
           th Estado
+          th Activo
           th Acciones
       tbody
         each insumo in insumos
-          tr(style=insumo.estado === 'vencido' || insumo.estado === 'agotado' ? 'background-color:#fdd' : '')
+          tr(class=(insumo.estado === 'agotado' ? 'table-danger' : insumo.estado === 'vencido' ? 'table-warning' : ''))
             td= insumo.nombre
             td= insumo.categoria
             td= insumo.stock
             td= insumo.unidad
-            td= insumo.fechaVencimiento
+            - const fecha = insumo.fechaVencimiento ? new Date(insumo.fechaVencimiento).toISOString().slice(0,10) : 'Sin fecha'
+            td= fecha
             td= insumo.estado
+            td= insumo.activo ? 'Sí' : 'No'
             td
-              a(href=`/insumos/editar/${insumo.id}`) Editar
-              |  
-              form(action=`/insumos/eliminar/${insumo.id}?_method=DELETE`, method="POST", style="display:inline")
-                button(type="submit") Eliminar
+              a.btn.btn-warning.btn-sm(href=`/insumos/editar/${insumo._id}`) Editar
+              form(action=`/insumos/eliminar/${insumo._id}?_method=DELETE`, method="POST", class="d-inline")
+                button.btn.btn-danger.btn-sm(type="submit") Eliminar
   else
     p No hay insumos registrados

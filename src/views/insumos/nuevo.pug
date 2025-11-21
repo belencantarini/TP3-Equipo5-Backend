@@ -2,44 +2,38 @@ extends ../layout
 
 block content
   h2 Nuevo Insumo
-  a(href="/insumos") Volver
+  a.btn.btn-secondary(href="/insumos") Volver
   br
   br
 
   if error
-    p(style="color:red")= error
+    p.text-danger= error
 
-  form(action="/insumos/nuevo", method="post")
-    div
+  form(action="/insumos/nuevo", method="post", class="formulario")
+    .form-group
       label(for="nombre") Nombre
-      br
-      input#nombre(type="text", name="nombre", placeholder="Nombre", value=(insumo && insumo.nombre) ? insumo.nombre : "", required)
+      input#nombre.form-control(type="text", name="nombre", placeholder="Nombre", value=(insumo && insumo.nombre) ? insumo.nombre : "", required)
 
-    div
+    .form-group
       label(for="categoria") Categoría
-      br
-      select(name="categoria", required)
+      select.form-control(name="categoria", required)
         each cat in categorias
-          option(value=cat selected=(insumo.categoria === cat))= cat
-      
+          option(value=cat selected=(insumo && insumo.categoria === cat))= cat
 
-    div
+    .form-group
       label(for="stock") Stock
-      br
-      input#stock(type="number", name="stock", placeholder="Stock", value=(insumo && insumo.stock) ? insumo.stock : "", required)
+      input#stock.form-control(type="number", name="stock", placeholder="Stock", value=(insumo && insumo.stock) ? insumo.stock : "", required)
 
-    div
+    .form-group
       label(for="unidad") Unidad
-      br
-      select(name="unidad", required)
+      select.form-control(name="unidad", required)
         each u in unidades
-          option(value=u selected=(insumo.unidad === u))= u
+          option(value=u selected=(insumo && insumo.unidad === u))= u
 
-      
-    div
+    .form-group
       label(for="fechaVencimiento") Fecha de vencimiento
-      br
-      input#fechaVencimiento(type="date", name="fechaVencimiento", value=(insumo && insumo.fechaVencimiento) ? insumo.fechaVencimiento : "", required)
+      - const fecha = insumo && insumo.fechaVencimiento ? new Date(insumo.fechaVencimiento).toISOString().slice(0,10) : ""
+      input#fechaVencimiento.form-control(type="date", name="fechaVencimiento", value=fecha, required)
 
     br
-    button(type="submit") Guardar
+    button.btn.btn-primary(type="submit") Guardar
