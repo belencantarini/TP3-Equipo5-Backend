@@ -27,7 +27,7 @@ async function crearAdmin() {
       area: "Administración de Turnos",    // ✔ EXISTE
       email: "admin@clinica.com",
       password: hashed,
-      rol: "Administrador",               // ✔ EXISTE
+      rol: "administrador",               // ✔ EXISTE
       activo: true
     });
 
