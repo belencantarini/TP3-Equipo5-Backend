@@ -108,6 +108,38 @@ La portada funciona como un panel administrativo con:
 * Organización clara para el usuario
 
 ---
+## Módulos desarrollados por Emiliano Nuñez
+ 
+ ### Insumos
+
+ **Funcionalidades**
+ 
+ * Listado completo de insumos con estados (vigente, vencido, agotado)
+ * Creación de insumos con formulario moderno
+ * Edición de insumos con carga de datos desde MongoDB
+ * Eliminación de insumos con confirmación
+ * Validaciones de campos (stock, fecha de vencimiento, unidad)
+ * Modelo Mongoose con persistencia en MongoDB
+
+ **Mejoras incorporadas**
+ 
+* Diseño unificado (igual a los otros módulos)
+* Formularios claros con botón “Volver” y estilos consistentes
+* Tablas estilizadas con colores de alerta:
+* 🔴 Agotados → table-danger
+* 🟡 Vencidos → table-warning
+* Integración visual coherente con el resto del sistema
+* Código ordenado y semántico, adaptado a MongoDB
+
+ **Dashboard (Portada)**
+ 
+ * Tarjeta de estadísticas de insumos integrada al panel principal
+ * Conteo dinámico de insumos desde MongoDB
+ * Visualización clara en rojo del total de insumos
+ * Posibilidad de extender a subtotales por estado (vigente, vencido, agotado)
+ * Diseño consistente con las demás tarjetas (Pacientes, Empleados, Tareas)
+
+---
 
 ## 🛠️ Instalación y Ejecución Local
 
