@@ -34,12 +34,12 @@ async function formularioNuevaTarea(req, res) {
     try {
         const data = await cargarDatosParaFormulario();
 
-        res.render('tareasmongo/nuevo', {
+        res.render('tareas/nuevo', {
             titulo,
             ...data 
         });
     } catch (error) {
-        return res.render('tareasmongo/nuevo', {
+        return res.render('tareas/nuevo', {
             titulo,
             error: "Error al cargar datos del formulario: " + error.message
         });
@@ -50,11 +50,11 @@ async function crearTarea(req, res) {
     try {
         const nuevaTarea = new Tarea(req.body);
         await nuevaTarea.save();
-        res.redirect('/tareasmongo');
+        res.redirect('/tareas');
     } catch (error) {
         const data = await cargarDatosParaFormulario();
 
-        return res.render('tareasmongo/nuevo', {
+        return res.render('tareas/nuevo', {
             titulo: "Nueva tarea",
             error: error.message,
             tarea: req.body, 
@@ -92,7 +92,7 @@ async function listarTareas(req, res) {
                                   .sort({ fechaInicio: -1 })  
                                   .lean(); 
 
-        res.render('tareasmongo/listado', {
+        res.render('tareas/listado', {
             tareas,
             ...data,
             filtros: filtros 
@@ -100,7 +100,7 @@ async function listarTareas(req, res) {
         
     } catch (error) {
         const data = await cargarDatosParaFormulario();
-        res.status(500).render('tareasmongo/listado', {
+        res.status(500).render('tareas/listado', {
             error: "Error al listar tareas: " + error.message,
             tareas: [],
             ...data,
@@ -116,19 +116,19 @@ async function formularioEditarTarea(req, res) {
         const tarea = await Tarea.findById(req.params.id).lean();
         
         if (!tarea) {
-            return res.redirect('/tareasmongo'); 
+            return res.redirect('/tareas'); 
         }
 
  
         const data = await cargarDatosParaFormulario();
 
-        return res.render('tareasmongo/editar', {
+        return res.render('tareas/editar', {
             titulo,
             tarea,
             ...data
         });
     } catch (error) {
-        return res.render('tareasmongo/editar', {
+        return res.render('tareas/editar', {
             titulo,
             error: "Error al cargar la tarea: " + error.message
         });
@@ -147,19 +147,19 @@ async function actualizarTarea(req, res) {
         });
 
         if (!tareaActualizada) {
-            return res.status(404).render('tareasmongo/editar', {
+            return res.status(404).render('tareas/editar', {
                 titulo,
                 error: "Tarea no encontrada para actualizar.",
                 tarea: req.body
             });
         }
         
-        res.redirect('/tareasmongo');
+        res.redirect('/tareas');
     } catch (error) {
          const data = await cargarDatosParaFormulario();
         const tarea = { ...req.body, _id: req.params.id };  
 
-        res.status(400).render('tareasmongo/editar', {
+        res.status(400).render('tareas/editar', {
             titulo,
             error: "Error de validación al actualizar: " + error.message,
             tarea,
@@ -176,13 +176,13 @@ async function eliminarTarea(req, res) {
         const tareaEliminada = await Tarea.findByIdAndDelete(id); 
 
         if (!tareaEliminada) {
-            return res.status(404).redirect('/tareasmongo?error=Tarea+no+encontrada');
+            return res.status(404).redirect('/tareas?error=Tarea+no+encontrada');
         }
         
-        res.redirect('/tareasmongo');
+        res.redirect('/tareas');
     } catch (error) {
         console.error("Error al eliminar tarea:", error);
-        return res.status(500).redirect('/tareasmongo?error=Error+interno+al+eliminar');
+        return res.status(500).redirect('/tareas?error=Error+interno+al+eliminar');
     }
 }
 
