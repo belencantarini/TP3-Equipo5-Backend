@@ -1,169 +1,214 @@
 extends ../layout
 
 block content
-  h2 Editar Tarea
-  p ID: #{tarea && tarea.id}
-  a(href="/tareas") Volver
-  br
-  br
+  .container.my-5
+    .row
+      .col-12
+        // 1. Quitar 'Mongo' del título
+        h2.mb-4.text-warning Editar Tarea
+        p.mb-4 ID: #{tarea && tarea._id}
 
-  if error
-    p(style="color:red")= error
+        // 2. Quitar 'tareas' del enlace de Volver
+        a.btn.btn-sm.btn-outline-secondary.mb-3(href="/tareas") Volver
 
-  if tarea
-    form(action=`/tareas/editar/${tarea.id}`, method="post")
-      div
-        label(for="area") Área: 
-          br
-          select#area(name="area", required)
-            option(value="" disabled) Seleccione un área
-            each a in areas
-              option(value=a selected=(tarea && tarea.area == a) ? true : false)= a
-
-      div
-        label(for="tipoTarea") Tipo (opcional)
-        br
-        select#tipoTarea(name="")
-        input#otroTipo(type="text" placeholder="Escribe el tipo aquí" style="display:none;")
-        input#tipo(type="hidden" name="tipo")
-
-      div
-        label(for="estado") Estado
-        br
-        select#estado(name="estado", required)
-          option(value="" disabled) Seleccione un estado
-          each est in estados 
-            option(value=est selected=(tarea && tarea.estado == est) ? true : false)= est
-
-      div
-        label(for="prioridad") Prioridad
-        br
-        select#prioridad(name="prioridad", required)
-          option(value="" disabled) Seleccione una prioridad
-          each pri in prioridades 
-            option(value=pri selected=(tarea && tarea.prioridad == pri) ? true : false)= pri  
-
-      div
-        label(for="fechaInicio") Fecha Inicio (opcional)
-        br
-        input#fechaInicio(type="datetime-local", name="fechaInicio", value=(tarea && tarea.fechaInicio) ? new Date(tarea.fechaInicio).toISOString().slice(0,16) : "")
-
-      div
-        label(for="fechaFin") Fecha Fin (opcional)
-        br
-        input#fechaFin(type="datetime-local", name="fechaFin", value=(tarea && tarea.fechaFin) ? new Date(tarea.fechaFin).toISOString().slice(0,16) : "")
-
-      div
-        label(for="empleadoId") Empleado (opcional)
-        br
-        select#empleadoId(name="empleadoId")
-          option(value="" selected) Ninguno
-          each e in empleados
-            option(value=e.id selected=(tarea && tarea.empleadoId == e.id) ? true : false)= "Id: " + e.id + " - " + e.nombre + " " + e.apellido
-
-      div
-        label(for="pacienteId") Paciente (opcional)
-        br
-        select#pacienteId(name="pacienteId")
-          option(value="" selected) Ninguno
-          each p in pacientes
-            option(value=p.id selected=(tarea && tarea.pacienteId == p.id) ? true : false)= "Id: " + p.id + " - " + p.nombre + " " + p.apellido
-
-      div
-        label(for="proveedor") Proveedor (opcional)
-        br
-        textarea#proveedor(name="proveedor", placeholder="Proveedor")= (tarea && tarea.proveedor) ? tarea.proveedor : ""
-
-
-      div
-        label(for="observaciones") Observaciones (opcional)
-        br
-        textarea#observaciones(name="observaciones", placeholder="Observaciones")= (tarea && tarea.observaciones) ? tarea.observaciones : ""
-      br
-      button(type="submit") Guardar cambios
-
-    script.
-      document.addEventListener('DOMContentLoaded', function() {
-        const areaSelect = document.getElementById('area');
-        const tipoSelect = document.getElementById('tipoTarea');
-        const otroTipoInput = document.getElementById('otroTipo');
-        const tipoHiddenInput = document.getElementById('tipo');
-        const form = document.querySelector('form');
+        if error
+          .alert.alert-danger(role="alert")
+            | #{error}
         
-        const tiposValidosPorArea = !{JSON.stringify(tiposValidosPorArea)};
-        const tarea = !{JSON.stringify(tarea)};
-        
-        const populateTipos = (selectedArea, selectedTipo) => {
-          const tipos = tiposValidosPorArea[selectedArea] || [];
-          let tipoFound = false;
-          
-          tipoSelect.innerHTML = '';
-          
-          const defaultOption = document.createElement('option');
-          defaultOption.value = "";
-          defaultOption.textContent = "Seleccione un tipo";
-          tipoSelect.appendChild(defaultOption);
+        if tarea
+          // 3. Quitar 'tareasmongo' de la acción del formulario y mantener el method=PUT
+          form.row.g-3(action=`/tareas/editar/${tarea._id}?_method=PUT`, method="post")
+            
+            // COLUMNA 1: ÁREA Y TIPO
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="area") Área: 
+                select#area.form-select(name="area", required)
+                  option(value="" disabled) Seleccione un área
+                  each a in areas
+                    option(value=a, selected=(tarea && tarea.area == a))= a
 
-          tipos.forEach(tipo => {
-            const option = document.createElement('option');
-            option.value = tipo;
-            option.textContent = tipo;
-            if (tipo === selectedTipo) {
-              option.selected = true;
-              tipoFound = true;
-            }
-            tipoSelect.appendChild(option);
-          });
-          
-          const otroOption = document.createElement('option');
-          otroOption.value = "Otro";
-          otroOption.textContent = "Otro";
-          if (selectedTipo && !tipoFound) {
-            otroOption.selected = true;
-          }
-          tipoSelect.appendChild(otroOption);
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="tipoTarea") Tipo (opcional)
+                select#tipoTarea.form-select(name="")
+                  // Las opciones se llenarán con el script
+                
+                // Input para el tipo "Otro" con clase Bootstrap
+                input#otroTipo.form-control.mt-2(type="text", placeholder="Escribe el tipo aquí", style="display:none;")
+                // Input oculto que contendrá el valor final
+                input#tipo(type="hidden", name="tipo", value=(tarea && tarea.tipo) ? tarea.tipo : "")
 
-          if (selectedTipo && !tipoFound) {
-            otroTipoInput.style.display = 'block';
-            otroTipoInput.value = selectedTipo;
-            tipoHiddenInput.value = selectedTipo;
-          }
-        };
 
-        areaSelect.addEventListener('change', function() {
-            populateTipos(this.value, null);
-            otroTipoInput.style.display = 'none';
-            tipoHiddenInput.value = '';
-        });
+            // COLUMNA 2: ESTADO Y PRIORIDAD
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="estado") Estado:
+                select#estado.form-select(name="estado", required)
+                  option(value="" disabled) Seleccione un estado
+                  each est in estados 
+                    option(value=est, selected=(tarea && tarea.estado == est))= est
 
-        tipoSelect.addEventListener('change', function() {
-          if (this.value === 'Otro') {
-            otroTipoInput.style.display = 'block';
-            otroTipoInput.required = true;
-            tipoHiddenInput.value = '';
-          } else {
-            otroTipoInput.style.display = 'none';
-            otroTipoInput.value = '';
-            otroTipoInput.required = false;
-            tipoHiddenInput.value = this.value;
-          }
-        });
-        
-        otroTipoInput.addEventListener('input', function() {
-          tipoHiddenInput.value = this.value;
-        });
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="prioridad") Prioridad:
+                select#prioridad.form-select(name="prioridad", required)
+                  option(value="" disabled) Seleccione una prioridad
+                  each pri in prioridades 
+                    option(value=pri, selected=(tarea && tarea.prioridad == pri))= pri  
 
-        form.addEventListener('submit', function(event) {
-          if (tipoSelect.value === 'Otro' && otroTipoInput.value.trim() === '') {
-            event.preventDefault();
-            alert('Por favor, escribe el nombre del nuevo tipo.');
-          }
-        });
+            // COLUMNA 3: FECHAS
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="fechaInicio") Fecha Inicio (opcional)
+                input#fechaInicio.form-control(
+                  type="datetime-local", 
+                  name="fechaInicio", 
+                  value=(tarea && tarea.fechaInicio) ? new Date(tarea.fechaInicio).toISOString().slice(0,16) : ""
+                )
 
-        if (tarea && tarea.area) {
-          areaSelect.value = tarea.area;
-          populateTipos(tarea.area, tarea.tipo);
-        } else {
-          populateTipos(areaSelect.value, null);
-        }
-      });
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="fechaFin") Fecha Fin (opcional)
+                input#fechaFin.form-control(
+                  type="datetime-local", 
+                  name="fechaFin", 
+                  value=(tarea && tarea.fechaFin) ? new Date(tarea.fechaFin).toISOString().slice(0,16) : ""
+                )
+
+            // COLUMNA 4: REFERENCIAS (Empleados y Pacientes)
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="empleadoId") Empleado (opcional)
+                select#empleadoId.form-select(name="empleadoId")
+                  option(value="" selected) Ninguno
+                  each e in empleados
+                    option(value=e._id, selected=(tarea && tarea.empleadoId == e._id) ? true : false)= "Id: " + e._id + " - " + e.nombre + " " + e.apellido
+
+            .col-md-6
+              .form-group.mb-3
+                label.form-label(for="pacienteId") Paciente (opcional)
+                select#pacienteId.form-select(name="pacienteId")
+                  option(value="" selected) Ninguno
+                  each p in pacientes
+                    option(value=p._id, selected=(tarea && tarea.pacienteId == p._id) ? true : false)= "Id: " + p._id + " - " + p.nombre + " " + p.apellido
+
+            // FILA COMPLETA: PROVEEDOR
+            .col-12
+              .form-group.mb-3
+                label.form-label(for="proveedor") Proveedor (opcional)
+                textarea#proveedor.form-control(name="proveedor", placeholder="Detalles del proveedor")= (tarea && tarea.proveedor) ? tarea.proveedor : ""
+              
+            // FILA COMPLETA: OBSERVACIONES
+            .col-12
+              .form-group.mb-3
+                label.form-label(for="observaciones") Observaciones (opcional)
+                textarea#observaciones.form-control(name="observaciones", placeholder="Observaciones")= (tarea && tarea.observaciones) ? tarea.observaciones : ""
+              
+            // BOTONES
+            .col-12.text-end.mt-3
+              a.btn.btn-secondary.me-2(href="/tareas") Volver
+              button.btn.btn-warning(type="submit") Guardar Cambios
+
+          // -----------------------
+          // SCRIPT DE ROLES DINÁMICOS
+          // -----------------------
+          script.
+            document.addEventListener('DOMContentLoaded', function() {
+              const areaSelect = document.getElementById('area');
+              const tipoSelect = document.getElementById('tipoTarea');
+              const otroTipoInput = document.getElementById('otroTipo');
+              const tipoHiddenInput = document.getElementById('tipo');
+              const form = document.querySelector('form');
+              
+              const tiposValidosPorArea = !{JSON.stringify(tiposValidosPorArea)};
+              const tarea = !{JSON.stringify(tarea)};
+              
+              const populateTipos = (selectedArea, selectedTipo) => {
+                const tipos = tiposValidosPorArea[selectedArea] || [];
+                let tipoFound = false;
+                
+                tipoSelect.innerHTML = '';
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Seleccione un tipo";
+                tipoSelect.appendChild(defaultOption);
+
+                tipos.forEach(tipo => {
+                  const option = document.createElement('option');
+                  option.value = tipo;
+                  option.textContent = tipo;
+                  if (tipo === selectedTipo) {
+                    option.selected = true;
+                    tipoFound = true;
+                  }
+                  tipoSelect.appendChild(option);
+                });
+                
+                const otroOption = document.createElement('option');
+                otroOption.value = "Otro";
+                otroOption.textContent = "Otro";
+                
+                // Si el tipo actual no está en la lista (es un tipo "Otro" guardado)
+                if (selectedTipo && !tipoFound) {
+                  otroOption.selected = true;
+                }
+                tipoSelect.appendChild(otroOption);
+
+                // Mostrar el campo "Otro" si el tipo no es uno de los predefinidos
+                if (selectedTipo && !tipoFound) {
+                  otroTipoInput.style.display = 'block';
+                  otroTipoInput.value = selectedTipo;
+                  tipoHiddenInput.value = selectedTipo;
+                } else {
+                  otroTipoInput.style.display = 'none';
+                  otroTipoInput.value = '';
+                  tipoHiddenInput.value = selectedTipo || ''; // Si encontró el tipo o es nulo
+                }
+              };
+
+              // Evento al cambiar el Área
+              areaSelect.addEventListener('change', function() {
+                  // Al cambiar el área, se resetea la selección de tipo a null
+                  populateTipos(this.value, null); 
+                  otroTipoInput.style.display = 'none';
+                  tipoHiddenInput.value = '';
+              });
+
+              // Evento al cambiar el Tipo
+              tipoSelect.addEventListener('change', function() {
+                if (this.value === 'Otro') {
+                  otroTipoInput.style.display = 'block';
+                  otroTipoInput.required = true;
+                  tipoHiddenInput.value = otroTipoInput.value; // Sincroniza si ya tiene valor
+                } else {
+                  otroTipoInput.style.display = 'none';
+                  otroTipoInput.value = '';
+                  otroTipoInput.required = false;
+                  tipoHiddenInput.value = this.value;
+                }
+              });
+              
+              // Evento al escribir en el campo "Otro"
+              otroTipoInput.addEventListener('input', function() {
+                tipoHiddenInput.value = this.value;
+              });
+
+              // Inicialización: Cargar la lista de tipos al cargar la página
+              if (tarea && tarea.area) {
+                areaSelect.value = tarea.area;
+                populateTipos(tarea.area, tarea.tipo);
+              } else {
+                // Si no hay tarea o área, cargar los tipos por defecto (aunque no debería pasar)
+                populateTipos(areaSelect.value, null);
+              }
+              
+              // Validación al enviar (para el campo 'Otro')
+              form.addEventListener('submit', function(event) {
+                if (tipoSelect.value === 'Otro' && otroTipoInput.value.trim() === '') {
+                  event.preventDefault();
+                  alert('Por favor, escribe el nombre del nuevo tipo en el campo "Otro".');
+                }
+              });
+            });

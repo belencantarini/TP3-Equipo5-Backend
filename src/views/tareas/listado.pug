@@ -1,71 +1,114 @@
 extends ../layout
 
 block content
-  h2 Lista de Tareas
-  a(href="/tareas/nuevo") Nueva tarea
-  br
-  br
+  .container.my-5
+    .row
+      .col-12
+        
+        h2.mb-4.text-primary Listado de Tareas
+        a.btn.btn-success.mb-4(href="/tareas/nuevo") + Nueva Tarea
+        
+        if error
+          .alert.alert-danger(role="alert")
+            | #{error}
+        
+        // -----------------------
+        // 2. FORMULARIO DE FILTROS
+        // -----------------------
+        h4.mb-3 Filtros
+        .card.p-3.mb-5
+          
+          form.row.g-3(action="/tareas", method="get")
+            
+            // FILTRO ÁREA
+            .col-md-3
+              label.form-label(for="area") Área:
+              select.form-select(name="area")
+                option(value="") Todas
+                each a in areas
+                  option(value=a selected=(filtros.area == a))= a
 
-  if error
-    p(style="color:red")= error
-  
-  form(action="/tareas", method="get")
-    div
-      label(for="area") Área:
-      select(name="area")
-        option(value="") Todas
-        each a in areas
-          option(value=a selected=(filtros.area==a)?true:false)= a
+            // FILTRO EMPLEADO
+            .col-md-3
+              label.form-label(for="empleadoId") Empleado:
+              select.form-select(name="empleadoId")
+                option(value="") Todos
+                each e in empleados
+                  option(value=e._id selected=(filtros.empleadoId == e._id))
+                    | Id: #{e._id} - #{e.nombre} #{e.apellido}
 
-    div
-      label(for="empleadoId") Empleado:
-      select(name="empleadoId")
-        option(value="") Todos
-        each e in empleados
-          option(value=e.id selected=(filtros.empleadoId==e.id)?true:false)= "Id: " + e.id + " - " + e.nombre + " " + e.apellido
+            // FILTRO PACIENTE
+            .col-md-3
+              label.form-label(for="pacienteId") Paciente:
+              select.form-select(name="pacienteId")
+                option(value="") Todos
+                each p in pacientes
+                  option(value=p._id selected=(filtros.pacienteId == p._id))
+                    | Id: #{p._id} - #{p.nombre} #{p.apellido}
+            
+            // FILTRO ESTADO
+            .col-md-3
+              label.form-label(for="estado") Estado:
+              select.form-select(name="estado")
+                option(value="") Todos
+                each est in estados
+                  option(value=est selected=(filtros.estado == est))= est
 
-    div
-      label(for="pacienteId") Paciente:
-      select(name="pacienteId")
-        option(value="") Todos
-        each p in pacientes
-          option(value=p.id selected=(filtros.pacienteId==p.id)?true:false)= "Id: " + p.id + " - " + p.nombre + " " + p.apellido
-    
-    div
-      label(for="estado") Estado:
-      select(name="estado")
-        option(value="") Todos
-        each est in estados
-          option(value=est selected=(filtros.estado==est)?true:false)= est
+            // FILTRO PRIORIDAD
+            .col-md-3
+              label.form-label(for="prioridad") Prioridad:
+              select.form-select(name="prioridad")
+                option(value="") Todas
+                each pri in prioridades
+                  option(value=pri selected=(filtros.prioridad == pri))= pri
 
-    div
-      label(for="prioridad") Prioridad:
-      select(name="prioridad")
-        option(value="") Todas
-        each pri in prioridades
-          option(value=pri selected=(filtros.prioridad==pri)?true:false)= pri
+            // FILTRO FECHA
+            .col-md-3
+              label.form-label(for="fecha") Fecha (Inicio):
+              input.form-control(type="date" name="fecha" value=(filtros.fecha || ''))
 
-    div
-      label(for="fecha") Fecha:
-      input(type="date" name="fecha" value=(filtros.fecha || ''))
+            // BOTONES DE FILTRO
+            .col-12.d-flex.gap-2.mt-3
+              button.btn.btn-primary(type="submit") 🔎 Filtrar
+              // 4. Quitar 'tareasmongo' del botón de limpiar
+              button.btn.btn-outline-secondary(type="button", onclick="location.href='/tareas'") Limpiar filtros
+        
+        // -----------------------
+        // 5. LISTADO (Tabla)
+        // -----------------------
+        
+        h3.mb-3 Tareas Encontradas
 
-    br
-    button(type="submit") Filtrar
-    button(type="button", onclick="location.href='/tareas'") Limpiar filtros
-
-  br
-
-
-  h2 Listado de Tareas
-  
-
-  if tareas && tareas.length
-    ul
-      each t in tareas
-        li
-          | Área: #{t.area}, Tipo: #{t.tipo}, Estado: #{t.estado}, Prioridad: #{t.prioridad}, Fecha Inicio: #{t.fechaInicio}, Fecha Fin: #{t.fechaFin || 'N/A'}, Empleado ID: #{t.empleadoId || 'N/A'}, Paciente ID: #{t.pacienteId || 'N/A'}, Proveedor: #{t.proveedor || 'N/A'}, Observaciones: #{t.observaciones || 'N/A'} -
-        button(type="button", onclick=`location.href='/tareas/editar/${t.id}'`) Editar
-        form(action=`/tareas/eliminar/${t.id}?_method=DELETE`, method="post", style="display:inline")
-          button(type="submit") Eliminar
-  else
-    p No hay tareas registradas.
+        if tareas && tareas.length
+          .table-responsive
+            table.table.table-striped.table-hover.table-sm
+              thead.table-dark
+                tr
+                  th #ID
+                  th Área
+                  th Tipo
+                  th Estado
+                  th Prioridad
+                  th Empleado
+                  th Paciente
+                  th Acciones
+              tbody
+                each t in tareas
+                  tr
+                    td= t._id
+                    td= t.area
+                    td= t.tipo
+                    td= t.estado
+                    td= t.prioridad
+                    // Nota: Aquí solo muestra el ID, deberías buscar el nombre en el backend para mejor UX
+                    td= t.empleadoId || 'N/A'
+                    td= t.pacienteId || 'N/A'
+                    td.d-flex.gap-2
+                    
+                      a.btn.btn-sm.btn-warning(href=`/tareas/editar/${t._id}`) Editar
+                      
+                      
+                      form(action=`/tareas/eliminar/${t._id}?_method=DELETE`, method="post", style="display:inline")
+                        button.btn.btn-sm.btn-danger(type="submit", onclick="return confirm('¿Está seguro de que desea eliminar esta tarea?')") Eliminar
+        else
+          .alert.alert-info No hay tareas que coincidan con los filtros aplicados.

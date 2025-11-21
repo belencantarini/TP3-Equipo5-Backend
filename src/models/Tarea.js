@@ -1,19 +1,17 @@
-const { v4: uuidv4 } = require('uuid')
+const mongoose = require('mongoose');
 
-class Tarea {
-    constructor({area, tipo, estado, prioridad, fechaInicio, fechaFin, empleadoId,pacienteId,proveedor,observaciones}) {
-        this.id = uuidv4()
-        this.area = area
-        this.tipo = tipo || null;
-        this.estado = estado
-        this.prioridad = prioridad
-        this.fechaInicio = new Date().toISOString(); 
-        this.fechaFin = fechaFin || null;
-        this.empleadoId = empleadoId || null; 
-        this.pacienteId = pacienteId || null; 
-        this.proveedor = proveedor || null; 
-        this.observaciones = observaciones || null;
-    }
-}
+const tareaSchema = new mongoose.Schema({
+    area: {type: String, required: true, trim: true},
+    tipo: {type: String, trim: true, default: null},
+    estado: {type: String, required: true, trim: true},
+    prioridad: {type: String, required: true, trim: true},
+    fechaInicio: {type: Date, default: Date.now},
+    fechaFin: {type: Date, default: null},
+    empleadoId: { type: String, default: null },
+    pacienteId: { type: String, default: null },
+    proveedor: { type: String, default: null },
+    observaciones: { type: String, default: null },
+    activo: { type: Boolean, default: true }
+}, { timestamps: true });
 
-module.exports = Tarea
+module.exports = mongoose.model('Tarea', tareaSchema);

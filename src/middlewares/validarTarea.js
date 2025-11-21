@@ -1,42 +1,25 @@
-const {
-    leerData
-} = require('../lib/fs')
+const { leerData } = require('../lib/fs');  
+const Empleado = require('../models/empleadoMongoModel');
+const Paciente = require('../models/pacienteMongoModel');
 
-
+// VALIDACION VISTA TAREA MONGO
 function validarTarea(vista) {
-    const url = `tareas/${vista}`
+    const url = `tareas/${vista}`;
 
     return async (req, res, next) => {
         try {
-            const areas = await leerData('areas')
-            const empleados = await leerData('empleados')
-            const pacientes = await leerData('pacientes')
-            const {estadosValidos, prioridadesValidas, tiposValidosPorArea} = await leerData("config")
-            const {
-                area,
-                tipo,
-                estado,
-                prioridad,
-                fechaFin,
-                empleadoId,
-                pacienteId,
-                proveedor,
-                observaciones
-            } = req.body
-            const { id } = req.params
+            const config = await leerData("config");
+            const { areas, estadosValidos, prioridadesValidas, tiposValidosPorArea } = config;
 
-            let tarea = {
-                id,
-                area,
-                tipo,
-                estado,
-                prioridad,
-                fechaFin,
-                empleadoId,
-                pacienteId,
-                proveedor,
-                observaciones
-            }
+            const empleados = await Empleado.find({ activo: true });
+            const pacientes = await Paciente.find({ activo: true });
+            
+            const {
+                area, tipo, estado, prioridad, fechaFin, empleadoId, pacienteId, proveedor, observaciones
+            } = req.body;
+            const { id } = req.params;
+
+            let tarea = { id, area, tipo, estado, prioridad, fechaFin, empleadoId, pacienteId, proveedor, observaciones };
 
             const renderError = (msg) => res.render(url, {
                 error: msg,
@@ -47,52 +30,51 @@ function validarTarea(vista) {
                 estados: estadosValidos,
                 prioridades: prioridadesValidas,
                 tiposValidosPorArea
-            })
+            });
 
-            // Validar área
             if (!areas.includes(area)) {
-                return renderError(`Área inválida. Opciones: ${areas.join(", ")}`)
+                return renderError(`Área inválida. Opciones: ${areas.join(", ")}`);
             }
 
-
-            // Validar estado
             if (!estadosValidos.includes(estado)) {
-                return renderError(`Estado inválido. Debe ser uno de: ${estadosValidos.join(", ")}`)
+                return renderError(`Estado inválido. Debe ser uno de: ${estadosValidos.join(", ")}`);
             }
 
-            // Si está completada y no hay fechaFin, la genera
             if (estado === "completada" && !fechaFin) {
-                const fechaActual = new Date()
-                tarea.fechaFin = fechaActual.toLocaleString('es-AR')
-                req.body.fechaFin = tarea.fechaFin
+                const fechaActual = new Date();
+                tarea.fechaFin = fechaActual.toISOString();
+                req.body.fechaFin = tarea.fechaFin;
             }
 
-            // Validar prioridad
             if (!prioridadesValidas.includes(prioridad)) {
-                return renderError(`Prioridad inválida. Debe ser una de: ${prioridadesValidas.join(", ")}`)
+                return renderError(`Prioridad inválida. Debe ser una de: ${prioridadesValidas.join(", ")}`);
             }
 
-            // Validar paciente
             if (pacienteId) {
-                const pacienteExiste = pacientes.find(p => p.id === pacienteId)
+                const pacienteExiste = await Paciente.findById(pacienteId); 
                 if (!pacienteExiste) {
-                    return renderError("El paciente seleccionado no existe")
+                    return renderError("El paciente seleccionado no existe");
                 }
             }
 
-            // Validar empleado
             if (empleadoId) {
-                const empleadoExiste = empleados.find(e => e.id === empleadoId)
+                const empleadoExiste = await Empleado.findById(empleadoId); 
                 if (!empleadoExiste) {
-                    return renderError("El empleado seleccionado no existe")
+                    return renderError("El empleado seleccionado no existe");
                 }
-
             }
 
-            next()
+            next();
         } catch (error) {
-            return renderError("Error interno del servidor")
+            console.error("Error en validación de Vista Tarea:", error);
+            const config = await leerData("config");
+
+            return res.status(500).render('tareas/listado', { 
+                error: "Error interno del servidor al validar. " + error.message,
+                areas: config.areas || [] 
+            });
         }
-    }
+    };
 }
-module.exports = { validarTarea }
+
+module.exports = validarTarea;
