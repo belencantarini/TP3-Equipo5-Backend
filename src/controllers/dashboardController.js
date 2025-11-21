@@ -8,7 +8,7 @@ async function mostrarDashboard(req, res) {
 
     const totalPacientes = await Paciente.countDocuments();
     const totalEmpleados = await Empleado.countDocuments();
-    const totalTareasActivas = await Tarea.countDocuments({ estado: "activo" });
+    const totalTareasActivas = await Tarea.countDocuments({ activo: true });
     const totalInsumos = await Insumo.countDocuments();
 
     res.render('dashboard', {
