@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  h2.mb-4 Dashboard del sistema
+
+  if usuario
+    p Bienvenido, #{usuario.nombre} (#{usuario.rol})
+
+  .row.mt-4
+
+    // Tarjeta pacientes
+    .col-md-3
+      .card.shadow-sm.mb-3
+        .card-body.text-center
+          h4 Pacientes
+          h2.text-primary= totalPacientes
+          a.btn.btn-outline-primary.mt-2(href="/pacientes") Ver pacientes
+
+    // Tarjeta empleados
+    .col-md-3
+      .card.shadow-sm.mb-3
+        .card-body.text-center
+          h4 Empleados
+          h2.text-success= totalEmpleados
+          if usuario.rol === "administrador"
+            a.btn.btn-outline-success.mt-2(href="/empleados") Ver empleados
+          else
+            p.text-muted.mt-2 Sin permisos
+
+    // Tarjeta tareas
+    .col-md-3
+      .card.shadow-sm.mb-3
+        .card-body.text-center
+          h4 Tareas activas
+          h2.text-warning= totalTareasActivas
+          a.btn.btn-outline-warning.mt-2(href="/tareasmongo") Ver tareas
+
+    // Tarjeta insumos
+    .col-md-3
+      .card.shadow-sm.mb-3
+        .card-body.text-center
+          h4 Insumos
+          h2.text-danger= totalInsumos
+          a.btn.btn-outline-danger.mt-2(href="/insumos") Ver insumos

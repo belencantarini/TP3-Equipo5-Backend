@@ -1,19 +1,22 @@
-const express = require('express')
+const express = require('express');
+const router = express.Router();
+
 const {
-  listarPacientes,
-  crearPaciente,
-  obtenerPaciente,
-  actualizarPaciente,
-  eliminarPaciente
-} = require('../controllers/apiPacienteControllers')
-const { validarApiPaciente } = require('../middlewares/validarApiPaciente')
+    listarPacientes,
+    obtenerPaciente,
+    crearPaciente,
+    actualizarPaciente,
+    eliminarPaciente
+} = require('../controllers/apiPacienteControllers');
 
-const router = express.Router()
+const { validarApiPaciente } = require('../middlewares/validarApiPaciente');
 
-router.get('/', listarPacientes)
-router.get('/:id', obtenerPaciente)
-router.post('/', validarApiPaciente, crearPaciente)
-router.put('/:id', validarApiPaciente, actualizarPaciente)
-router.delete('/:id', eliminarPaciente)
+// Rutas API REST
+router.get('/', listarPacientes);
+router.get('/:id', obtenerPaciente);
+router.post('/', validarApiPaciente, crearPaciente);
+router.put('/:id', validarApiPaciente, actualizarPaciente);
+router.delete('/:id', eliminarPaciente);
 
-module.exports = router
+module.exports = router;
+

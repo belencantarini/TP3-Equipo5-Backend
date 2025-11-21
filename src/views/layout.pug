@@ -1,33 +1,55 @@
 doctype html
 html
   head
-    meta(charset="utf-8")
-    title= titulo || 'Clínica Médica DiagnoCare'
-    link(rel="stylesheet", href="/css/styles.css")
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= titulo || "Sistema Clínica Integral"
+
+    // Bootstrap
+    link(rel="stylesheet" href="/css/bootstrap.min.css")
+    link(rel="stylesheet" href="/css/styles.css")
+
   body
-    header
-      h1 Clínica Médica DiagnoCare
-      
-      nav.nav-principal
-        ul
-          // 🏠 INICIO
-          li: a(href="/") Inicio
-          
-          // 💾 SECCIÓN JSON / DATOS LOCALES
-          li: span.nav-separator.label-local - DATOS LOCALES JSON:
-          li: a(href="/empleados") Empleados
-          li: a(href="/pacientes") Pacientes
-          li: a(href="/tareas") Tareas
-          li: a(href="/insumos") Insumos
-          
-          // ☁️ SECCIÓN MONGO DB
-          li: span.nav-separator.label-mongo - MIGRACION A MONGO DB:
-          li: a(href="/tareasmongo") Tareas MongoDB
-            
-    hr
-    main
+    // NAVBAR
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.mb-4
+      .container
+        a.navbar-brand(href="/") Clínica Integral
+
+        button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#menu")
+          span.navbar-toggler-icon
+
+        .collapse.navbar-collapse#menu
+          ul.navbar-nav.me-auto
+
+            if usuario
+              li.nav-item
+                a.nav-link(href="/") Inicio
+
+              if ["administrador","recepcion","medico"].includes(usuario.rol)
+                li.nav-item
+                  a.nav-link(href="/pacientes") Pacientes
+
+              if usuario.rol === "administrador"
+                li.nav-item
+                  a.nav-link(href="/empleados") Empleados
+
+              if ["administrador","mantenimiento"].includes(usuario.rol)
+                li.nav-item
+                  a.nav-link(href="/tareasmongo") Tareas
+
+              if ["administrador","mantenimiento"].includes(usuario.rol)
+                li.nav-item
+                  a.nav-link(href="/insumos") Insumos
+
+          if usuario
+            .d-flex.align-items-center.gap-3
+              span.text-white #{usuario.nombre} (#{usuario.rol})
+              a.btn.btn-sm.btn-light(href="/logout") Cerrar sesión
+          else
+            a.btn.btn-light(href="/login") Iniciar sesión
+
+    .container.mt-4
       block content
-    
-    hr
-    footer
-      p © 2025 Clínica Médica DiagnoCare - Grupo 5
+
+    script(src="/js/bootstrap.bundle.min.js")
+

@@ -3,63 +3,76 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
+const session = require('express-session');
 
-// Rutas API (JSON y MongoDB)
-const apiEmpleadoRoutes = require('./routes/apiEmpleadoRoutes');
-const apiPacienteRoutes = require('./routes/apiPacienteRoutes');
-const apiTareaRoutes = require('./routes/apiTareaRoutes');
-const apiInsumoRoutes = require('./routes/apiInsumoRoutes');
-const apiPacienteMongoRoutes = require('./routes/apiPacienteMongoRoutes');
-const apiEmpleadoMongoRoutes = require('./routes/apiEmpleadoMongoRoutes');
-const apiInsumoMongoRoutes = require('./routes/apiInsumoMongoRoutes');
-const apiTareaMongoRoutes = require('./routes/apiTareaMongoRoutes');
-
-// Rutas Vistas (Pug y MongoDB)
-const empleadoRoutes = require('./routes/empleadoRoutes');
-const tareaRoutes = require('./routes/tareaRoutes');
-const pacienteRoutes = require('./routes/pacienteRoutes');
-const insumoRoutes = require('./routes/insumoRoutes');
-const tareaMongoRoutes = require('./routes/tareaMongoRoutes');
-
-// Configuración general
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
+// =========================
+//   Middlewares globales
+// =========================
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
-// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-// Motor de vistas
+// =========================
+//   Sesiones (LOGIN)
+// =========================
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'claveSecreta123',
+  resave: false,
+  saveUninitialized: false
+}));
+
+// 🔥 Pasar usuario automáticamente a TODAS las vistas
+app.use((req, res, next) => {
+  res.locals.usuario = req.session.usuario || null;
+  next();
+});
+
+// =========================
+//   Motor de vistas (PUG)
+// =========================
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// Rutas API
-app.use('/api/empleados', apiEmpleadoRoutes);
-app.use('/api/pacientes', apiPacienteRoutes);
-app.use('/api/tareas', apiTareaRoutes);
-app.use('/api/insumos', apiInsumoRoutes);
-app.use('/api/pacientesmongo', apiPacienteMongoRoutes);
-app.use('/api/empleadosmongo', apiEmpleadoMongoRoutes);
-app.use('/api/insumosmongo', apiInsumoMongoRoutes);
-app.use('/api/tareasmongo', apiTareaMongoRoutes);
+// =========================
+//   Rutas de LOGIN
+// =========================
+// /login, /logout
+app.use('/', require('./routes/authRoutes'));
 
-// Rutas vistas
-app.get('/', (req, res) => res.render('portada'));
-app.use('/empleados', empleadoRoutes);
-app.use('/tareas', tareaRoutes);
-app.use('/pacientes', pacienteRoutes);
-app.use('/insumos', insumoRoutes);
-app.use('/tareasmongo', tareaMongoRoutes);
+// =========================
+//   Dashboard (Pantalla principal)
+// =========================
+// requiere login, lo maneja el router
+app.use('/', require('./routes/dashboardRoutes'));
 
-// Conexión a MongoDB Atlas
+// =========================
+//   CRUD VISTAS (PUG + Mongo)
+// =========================
+app.use('/empleados', require('./routes/empleadoRoutes'));
+app.use('/pacientes', require('./routes/pacienteRoutes'));
+app.use('/tareas', require('./routes/tareaRoutes'));
+app.use('/insumos', require('./routes/insumoRoutes'));
+
+// =========================
+//   Página 404 (AL FINAL)
+// =========================
+app.use((req, res) => {
+  res.status(404).render('404');
+});
+
+// =========================
+//   Conexión a MongoDB Atlas
+// =========================
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    console.log('✅ Conectado correctamente a MongoDB');
-    app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
+    console.log('✅ Conectado a MongoDB Atlas');
+    app.listen(PORT, () =>
+      console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`)
+    );
   })
   .catch(err => {
     console.error('❌ Error al conectar con MongoDB:', err.message);

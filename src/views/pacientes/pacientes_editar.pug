@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    h2 Editar Paciente
+
+    if error
+      .alert.alert-danger= error
+
+    form(action=`/pacientes/editar/${paciente._id}` method="POST")
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label Nombre
+            input.form-control(type="text" name="nombre" required value=paciente.nombre)
+
+        .col-md-6
+          .mb-3
+            label.form-label Apellido
+            input.form-control(type="text" name="apellido" required value=paciente.apellido)
+
+      .row
+        .col-md-6
+          .mb-3
+            label.form-label DNI
+            input.form-control(type="text" name="dni" required value=paciente.dni)
+
+        .col-md-6
+          .mb-3
+            label.form-label Teléfono
+            input.form-control(type="text" name="telefono" value=paciente.telefono)
+
+      .mb-3
+        label.form-label Email
+        input.form-control(type="email" name="email" value=paciente.email)
+
+      .d-flex.gap-2
+        a.btn.btn-secondary(href="/pacientes") Volver
+        button.btn.btn-primary(type="submit") Guardar cambios
+
+
+
+
+
+
+
+

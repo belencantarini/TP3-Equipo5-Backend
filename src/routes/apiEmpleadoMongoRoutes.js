@@ -1,12 +1,13 @@
+// src/routes/apiEmpleadoMongoRoutes.js
 const express = require('express');
 const router = express.Router();
-const EmpleadoMongoController = require('../controllers/empleadoMongoController');
+const controlador = require('../controllers/apiEmpleadoMongoController');
+const { validarApiEmpleado } = require('../middlewares/validarApiEmpleado');
 
-// Rutas API para Empleados (MongoDB)
-router.get('/', EmpleadoMongoController.listarEmpleados);
-router.get('/:id', EmpleadoMongoController.obtenerEmpleadoPorId);
-router.post('/', EmpleadoMongoController.crearEmpleado);
-router.put('/:id', EmpleadoMongoController.actualizarEmpleado);
-router.delete('/:id', EmpleadoMongoController.eliminarEmpleado);
+router.get('/', controlador.listar);
+router.get('/:id', controlador.obtenerPorId);
+router.post('/', validarApiEmpleado, controlador.crear);
+router.put('/:id', validarApiEmpleado, controlador.actualizar);
+router.delete('/:id', controlador.eliminar);
 
 module.exports = router;

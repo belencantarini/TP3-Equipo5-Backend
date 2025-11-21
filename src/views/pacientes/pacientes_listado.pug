@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    h2 Lista de Pacientes
+
+    if error
+      .alert.alert-danger= error
+
+    .text-end.mb-3
+      a.btn.btn-primary(href="/pacientes/nuevo") Nuevo Paciente
+
+    table.table.table-striped
+      thead
+        tr
+          th Nombre
+          th Apellido
+          th DNI
+          th Teléfono
+          th Email
+          th Acciones
+      tbody
+        each p in pacientes
+          tr
+            td= p.nombre
+            td= p.apellido
+            td= p.dni
+            td= p.telefono
+            td= p.email
+            td
+              a.btn.btn-warning.btn-sm(href=`/pacientes/editar/${p._id}`) Editar
+              form(method="POST", action=`/pacientes/eliminar/${p._id}`, style="display:inline")
+                button.btn.btn-danger.btn-sm(type="submit") Eliminar

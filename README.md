@@ -243,4 +243,8 @@ Buenas prácticas en rutas y controladores
 
 Diseño homogéneo e institucional
 
+<<<<<<< HEAD
 Código organizado y mantenible
+=======
+Código organizado y mantenible
+>>>>>>> dc65982c603587eabfee72b1d59b59c87afd7983

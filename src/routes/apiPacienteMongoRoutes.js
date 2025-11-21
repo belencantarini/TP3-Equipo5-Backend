@@ -1,12 +1,13 @@
+// src/routes/apiPacienteMongoRoutes.js
 const express = require('express');
 const router = express.Router();
-const PacienteMongoController = require('../controllers/pacienteMongoController');
+const controlador = require('../controllers/apiPacienteMongoController');
+const { validarApiPaciente } = require('../middlewares/validarApiPaciente');
 
-// Rutas API Pacientes (MongoDB)
-router.get('/', PacienteMongoController.listarPacientes);
-router.get('/:id', PacienteMongoController.obtenerPacientePorId);
-router.post('/', PacienteMongoController.crearPaciente);
-router.put('/:id', PacienteMongoController.actualizarPaciente);
-router.delete('/:id', PacienteMongoController.eliminarPaciente);
+router.get('/', controlador.listar);
+router.get('/:id', controlador.obtenerPorId);
+router.post('/', validarApiPaciente, controlador.crear);
+router.put('/:id', validarApiPaciente, controlador.actualizar);
+router.delete('/:id', controlador.eliminar);
 
 module.exports = router;
