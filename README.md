@@ -117,7 +117,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 
 * Instala todas las dependencias del proyecto:
     ```bash
-    npm install
+    npm i
     ```
 
 ### 2. Configuración de Variables de Entorno (.env)
