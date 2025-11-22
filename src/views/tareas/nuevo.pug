@@ -74,7 +74,8 @@ block content
               select#empleadoId.form-select(name="empleadoId")
                 option(value="" selected) Ninguno
                 each e in empleados
-                  option(value=e._id, selected=(tarea && tarea.empleadoId == e._id) ? true : false)= "Id: " + e._id + " - " + e.nombre + " " + e.apellido
+                  const isSelected = tarea && ((typeof tarea.empleadoId === 'object' && tarea.empleadoId._id.toString() === e._id.toString()) || (typeof tarea.empleadoId === 'string' && tarea.empleadoId === e._id.toString()));
+                  option(value=e._id, selected=isSelected  ? true : false) #{e.nombre} #{e.apellido} (#{e.rol}) - DNI: #{e.dni}
 
           .col-md-6
             .form-group.mb-3
@@ -82,7 +83,8 @@ block content
               select#pacienteId.form-select(name="pacienteId")
                 option(value="" selected) Ninguno
                 each p in pacientes
-                  option(value=p._id, selected=(tarea && tarea.pacienteId == p._id) ? true : false)= "Id: " + p._id + " - " + p.nombre + " " + p.apellido
+                  const isSelected = tarea && ((typeof tarea.pacienteId === 'object' && tarea.pacienteId._id.toString() === p._id.toString()) || (typeof tarea.pacienteId === 'string' && tarea.pacienteId === p._id.toString()));
+                  option(value=p._id, selected=isSelected  ? true : false) #{p.nombre} #{p.apellido} - DNI: #{p.dni}
 
           // FILA COMPLETA: PROVEEDOR
           .col-12

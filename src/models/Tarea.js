@@ -7,8 +7,16 @@ const tareaSchema = new mongoose.Schema({
     prioridad: {type: String, required: true, trim: true},
     fechaInicio: {type: Date, default: Date.now},
     fechaFin: {type: Date, default: null},
-    empleadoId: { type: String, default: null },
-    pacienteId: { type: String, default: null },
+    empleadoId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Empleado',
+        default: null 
+    }, 
+    pacienteId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Paciente',
+        default: null 
+    },
     proveedor: { type: String, default: null },
     observaciones: { type: String, default: null },
     activo: { type: Boolean, default: true }
