@@ -24,11 +24,13 @@ async function validarApiTareaMongo(req, res, next) {
             tipo,
             estado,
             prioridad,
+            fechaInicio,
             fechaFin,
             empleadoId,
             pacienteId,
             proveedor,
-            observaciones
+            observaciones,
+            activo
         } = req.body;
 
 
