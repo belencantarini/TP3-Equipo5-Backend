@@ -37,11 +37,17 @@ app.use('/', require('./routes/authRoutes'));
 // Dashboard principal (requiere login dentro del router)
 app.use('/', require('./routes/dashboardRoutes'));
 
-// Rutas API para probar con Postman
+// =========================
+//   CRUD API (Mongo)
+// =========================
+app.use('/api/tareasmongo', require('./routes/apiTareaMongoRoutes'));
 app.use('/api/pacientes', require('./routes/apiPacienteMongoRoutes'));
 app.use('/api/empleados', require('./routes/apiEmpleadoMongoRoutes'));
+app.use('/api/insumos', require('./routes/apiInsumoMongoRoutes'));
 
-// Rutas normales (vistas con Pug)
+// =========================
+//   CRUD VISTAS (PUG + Mongo)
+// =========================
 app.use('/empleados', require('./routes/empleadoRoutes'));
 app.use('/pacientes', require('./routes/pacienteRoutes'));
 app.use('/tareas', require('./routes/tareaRoutes'));

@@ -1,4 +1,4 @@
-const Tarea = require('../models/TareaMongo'); 
+const Tarea = require('../models/Tarea'); 
 
 // Listar todas las tareas (GET /api/tareasmongo)
 const listarTareas = async (req, res) => {
