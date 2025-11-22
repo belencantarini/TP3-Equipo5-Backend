@@ -1,18 +1,29 @@
-const Tarea = require('../models/Tarea'); 
+const Tarea = require('../models/Tarea');
 const Empleado = require('../models/empleadoMongoModel');
 const Paciente = require('../models/pacienteMongoModel');
 
-const { leerData } = require('../lib/fs');
+const {
+    leerData
+} = require('../lib/fs');
 
 
 // DATOS PARA FORMULARIOS Y VALIDACIONES
 
 async function cargarDatosParaFormulario() {
     const config = await leerData("config");
-    const empleados = await Empleado.find({ activo: true }).select('nombre apellido _id').lean();
-    const pacientes = await Paciente.find({ activo: true }).select('nombre apellido _id').lean();
-    
-    const { areas, estadosValidos, prioridadesValidas, tiposValidosPorArea } = config;
+    const empleados = await Empleado.find({
+        activo: true
+    }).select('nombre apellido rol dni _id').lean();
+    const pacientes = await Paciente.find({
+        activo: true
+    }).select('nombre apellido dni _id').lean();
+
+    const {
+        areas,
+        estadosValidos,
+        prioridadesValidas,
+        tiposValidosPorArea
+    } = config;
 
     return {
         areas,
@@ -36,7 +47,7 @@ async function formularioNuevaTarea(req, res) {
 
         res.render('tareas/nuevo', {
             titulo,
-            ...data 
+            ...data
         });
     } catch (error) {
         return res.render('tareas/nuevo', {
@@ -57,7 +68,7 @@ async function crearTarea(req, res) {
         return res.render('tareas/nuevo', {
             titulo: "Nueva tarea",
             error: error.message,
-            tarea: req.body, 
+            tarea: req.body,
             ...data
         });
     }
@@ -68,19 +79,19 @@ async function listarTareas(req, res) {
     try {
         const filtros = req.query;
         const data = await cargarDatosParaFormulario();
-        
+
         const mongoFiltro = {};
         if (filtros.area) mongoFiltro.area = filtros.area;
         if (filtros.empleadoId) mongoFiltro.empleadoId = filtros.empleadoId;
         if (filtros.pacienteId) mongoFiltro.pacienteId = filtros.pacienteId;
         if (filtros.estado) mongoFiltro.estado = filtros.estado;
         if (filtros.prioridad) mongoFiltro.prioridad = filtros.prioridad;
-        
+
 
         if (filtros.fecha) {
             const fechaInicio = new Date(filtros.fecha);
             const fechaFin = new Date(filtros.fecha);
-            fechaFin.setDate(fechaFin.getDate() + 1); 
+            fechaFin.setDate(fechaFin.getDate() + 1);
 
             mongoFiltro.fechaInicio = {
                 $gte: fechaInicio,
@@ -89,15 +100,17 @@ async function listarTareas(req, res) {
         }
 
         const tareas = await Tarea.find(mongoFiltro)
-                                  .sort({ fechaInicio: -1 })  
-                                  .lean(); 
+            .populate('empleadoId', 'nombre apellido rol dni')
+            .populate('pacienteId', 'nombre apellido dni')
+            .sort({fechaInicio: -1})
+            .lean();
 
         res.render('tareas/listado', {
             tareas,
             ...data,
-            filtros: filtros 
+            filtros: filtros
         });
-        
+
     } catch (error) {
         const data = await cargarDatosParaFormulario();
         res.status(500).render('tareas/listado', {
@@ -113,13 +126,16 @@ async function listarTareas(req, res) {
 async function formularioEditarTarea(req, res) {
     const titulo = "Editar tarea";
     try {
-        const tarea = await Tarea.findById(req.params.id).lean();
-        
+       const tarea = await Tarea.findById(req.params.id)
+       .populate('empleadoId', 'nombre apellido rol dni')
+       .populate('pacienteId', 'nombre apellido dni')
+       .lean();
+
         if (!tarea) {
-            return res.redirect('/tareas'); 
+            return res.redirect('/tareas');
         }
 
- 
+
         const data = await cargarDatosParaFormulario();
 
         return res.render('tareas/editar', {
@@ -139,11 +155,13 @@ async function formularioEditarTarea(req, res) {
 async function actualizarTarea(req, res) {
     const titulo = "Editar tarea";
     try {
-        const { id } = req.params;
+        const {
+            id
+        } = req.params;
 
         const tareaActualizada = await Tarea.findByIdAndUpdate(id, req.body, {
-            new: true, 
-            runValidators: true 
+            new: true,
+            runValidators: true
         });
 
         if (!tareaActualizada) {
@@ -153,11 +171,14 @@ async function actualizarTarea(req, res) {
                 tarea: req.body
             });
         }
-        
+
         res.redirect('/tareas');
     } catch (error) {
-         const data = await cargarDatosParaFormulario();
-        const tarea = { ...req.body, _id: req.params.id };  
+        const data = await cargarDatosParaFormulario();
+        const tarea = {
+            ...req.body,
+            _id: req.params.id
+        };
 
         res.status(400).render('tareas/editar', {
             titulo,
@@ -171,14 +192,16 @@ async function actualizarTarea(req, res) {
 //  ELIMINAR TAREA (DELETE /tareas/:id) ---
 async function eliminarTarea(req, res) {
     try {
-        const { id } = req.params;
-        
-        const tareaEliminada = await Tarea.findByIdAndDelete(id); 
+        const {
+            id
+        } = req.params;
+
+        const tareaEliminada = await Tarea.findByIdAndDelete(id);
 
         if (!tareaEliminada) {
             return res.status(404).redirect('/tareas?error=Tarea+no+encontrada');
         }
-        
+
         res.redirect('/tareas');
     } catch (error) {
         console.error("Error al eliminar tarea:", error);

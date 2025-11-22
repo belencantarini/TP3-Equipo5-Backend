@@ -1,4 +1,6 @@
-const { leerData } = require('../lib/fs');  
+const {
+    leerData
+} = require('../lib/fs');
 const Empleado = require('../models/empleadoMongoModel');
 const Paciente = require('../models/pacienteMongoModel');
 
@@ -9,17 +11,47 @@ function validarTarea(vista) {
     return async (req, res, next) => {
         try {
             const config = await leerData("config");
-            const { areas, estadosValidos, prioridadesValidas, tiposValidosPorArea } = config;
-
-            const empleados = await Empleado.find({ activo: true });
-            const pacientes = await Paciente.find({ activo: true });
-            
             const {
-                area, tipo, estado, prioridad, fechaFin, empleadoId, pacienteId, proveedor, observaciones
-            } = req.body;
-            const { id } = req.params;
+                areas,
+                estadosValidos,
+                prioridadesValidas,
+                tiposValidosPorArea
+            } = config;
 
-            let tarea = { id, area, tipo, estado, prioridad, fechaFin, empleadoId, pacienteId, proveedor, observaciones };
+            const empleados = await Empleado.find({
+                activo: true
+            });
+            const pacientes = await Paciente.find({
+                activo: true
+            });
+
+            const {
+                area,
+                tipo,
+                estado,
+                prioridad,
+                fechaFin,
+                empleadoId,
+                pacienteId,
+                proveedor,
+                observaciones
+            } = req.body;
+            const {
+                id
+            } = req.params;
+
+            let tarea = {
+                id,
+                area,
+                tipo,
+                estado,
+                prioridad,
+                fechaFin,
+                empleadoId,
+                pacienteId,
+                proveedor,
+                observaciones
+            };
 
             const renderError = (msg) => res.render(url, {
                 error: msg,
@@ -50,31 +82,36 @@ function validarTarea(vista) {
                 return renderError(`Prioridad inválida. Debe ser una de: ${prioridadesValidas.join(", ")}`);
             }
 
-            if (pacienteId) {
-                const pacienteExiste = await Paciente.findById(pacienteId); 
+            if (pacienteId && pacienteId.trim().length > 0) {
+                const pacienteExiste = await Paciente.findById(pacienteId);
                 if (!pacienteExiste) {
-                    return renderError("El paciente seleccionado no existe");
+                    return renderError("El paciente seleccionado no existe o el ID es inválido.");
                 }
+            } else {
+                req.body.pacienteId = null;
             }
 
-            if (empleadoId) {
-                const empleadoExiste = await Empleado.findById(empleadoId); 
+            if (empleadoId && empleadoId.trim().length > 0) {
+                const empleadoExiste = await Empleado.findById(empleadoId);
                 if (!empleadoExiste) {
-                    return renderError("El empleado seleccionado no existe");
+                    return renderError("El empleado seleccionado no existe o el ID es inválido.");
                 }
+            } else {
+                req.body.empleadoId = null;
             }
+        
 
-            next();
-        } catch (error) {
-            console.error("Error en validación de Vista Tarea:", error);
-            const config = await leerData("config");
+        next();
+    } catch (error) {
+        console.error("Error en validación de Vista Tarea:", error);
+        const config = await leerData("config");
 
-            return res.status(500).render('tareas/listado', { 
-                error: "Error interno del servidor al validar. " + error.message,
-                areas: config.areas || [] 
-            });
-        }
-    };
+        return res.status(500).render('tareas/listado', {
+            error: "Error interno del servidor al validar. " + error.message,
+            areas: config.areas || []
+        });
+    }
+};
 }
 
 module.exports = validarTarea;

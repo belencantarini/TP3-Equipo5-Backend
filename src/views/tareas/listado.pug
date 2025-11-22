@@ -36,8 +36,7 @@ block content
               select.form-select(name="empleadoId")
                 option(value="") Todos
                 each e in empleados
-                  option(value=e._id selected=(filtros.empleadoId == e._id))
-                    | Id: #{e._id} - #{e.nombre} #{e.apellido}
+                  option(value=e._id selected=(filtros.empleadoId == e._id))  #{e.nombre} #{e.apellido} (#{e.rol}) - DNI: #{e.dni}
 
             // FILTRO PACIENTE
             .col-md-3
@@ -45,8 +44,7 @@ block content
               select.form-select(name="pacienteId")
                 option(value="") Todos
                 each p in pacientes
-                  option(value=p._id selected=(filtros.pacienteId == p._id))
-                    | Id: #{p._id} - #{p.nombre} #{p.apellido}
+                  option(value=p._id selected=(filtros.pacienteId == p._id))  #{p.nombre} #{p.apellido} - DNI: #{p.dni}
             
             // FILTRO ESTADO
             .col-md-3
@@ -86,13 +84,16 @@ block content
             table.table.table-striped.table-hover.table-sm
               thead
                 tr
-                  th #ID
                   th Área
                   th Tipo
                   th Estado
                   th Prioridad
                   th Empleado
                   th Paciente
+                  th Proveedor
+                  th Fecha Inicio
+                  th Fecha Fin
+                  th Observaciones
                   th.text-nowrap Acciones
               tbody
                 each t in tareas
@@ -103,8 +104,18 @@ block content
                     td= t.estado
                     td= t.prioridad
                     // Nota: Aquí solo muestra el ID, deberías buscar el nombre en el backend para mejor UX
-                    td= t.empleadoId || 'N/A'
-                    td= t.pacienteId || 'N/A'
+                    td 
+                      if t.empleadoId
+                        |  #{t.empleadoId.nombre} #{t.empleadoId.apellido} (#{t.empleadoId.rol}) - DNI: #{t.empleadoId.dni}
+                      else
+                        | N/A
+                    td
+                      if t.pacienteId
+                        |  #{t.pacienteId.nombre} #{t.pacienteId.apellido} - DNI: #{t.pacienteId.dni}
+                      else
+                        | N/A
+                    td= t.proveedor || 'N/A'
+                    td= t.observaciones || 'N/A'
                     td
                       a.btn.btn-sm.btn-warning(href=`/tareas/editar/${t._id}`) Editar
                       form(action=`/tareas/eliminar/${t._id}?_method=DELETE`, method="post", style="display:inline")
