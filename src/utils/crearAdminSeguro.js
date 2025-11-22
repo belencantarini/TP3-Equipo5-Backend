@@ -1,4 +1,3 @@
-// utils/crearAdminSeguro.js
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -24,10 +23,10 @@ async function crearAdmin() {
       apellido: "Principal",
       dni: "11111111",
       telefono: "123456789",
-      area: "Administración de Turnos",    // ✔ EXISTE
+      area: "Administración de Turnos",    
       email: "admin@clinica.com",
       password: hashed,
-      rol: "administrador",               // ✔ EXISTE
+      rol: "administrador",               
       activo: true
     });
 
