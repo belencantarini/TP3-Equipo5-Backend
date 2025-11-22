@@ -1,16 +1,10 @@
 extends ../layout
 
 block content
-  .container.my-5
+  .container.mt-4
+    h2 Nueva Tarea
     .row
       .col-12
-        // 1. Quitar 'Mongo' del título
-        h2.mb-4 Nueva Tarea
-        a.btn.btn-sm.btn-outline-secondary.mb-3(href="/tareas") Volver
-
-        if error
-          .alert.alert-danger(role="alert")
-            | #{error}
 
         // 2. Quitar 'tareasmongo' de la acción del formulario
         form.row.g-3(action="/tareas/nuevo", method="post")

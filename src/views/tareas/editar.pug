@@ -1,15 +1,11 @@
 extends ../layout
 
 block content
-  .container.my-5
+  .container.mt-4
+    h2 Editar Tarea
     .row
       .col-12
-        // 1. Quitar 'Mongo' del título
-        h2.mb-4.text-warning Editar Tarea
         p.mb-4 ID: #{tarea && tarea._id}
-
-        // 2. Quitar 'tareas' del enlace de Volver
-        a.btn.btn-sm.btn-outline-secondary.mb-3(href="/tareas") Volver
 
         if error
           .alert.alert-danger(role="alert")

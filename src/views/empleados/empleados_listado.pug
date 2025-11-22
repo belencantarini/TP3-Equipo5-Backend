@@ -7,28 +7,29 @@ block content
     .text-end.mb-3
       a.btn.btn-primary(href="/empleados/nuevo") Nuevo Empleado
 
-    table.table.table-striped
-      thead
-        tr
-          th Nombre
-          th Apellido
-          th DNI
-          th Teléfono
-          th Email
-          th Rol
-          th Área
-          th Acciones
-      tbody
-        each e in empleados
+    .table-responsive
+      table.table.table-striped.table-hover.table-sm
+        thead
           tr
-            td= e.nombre
-            td= e.apellido
-            td= e.dni
-            td= e.telefono
-            td= e.email
-            td= e.rol
-            td= e.area
-            td
-              a.btn.btn-warning.btn-sm(href=`/empleados/editar/${e._id}`) Editar
-              form(method="POST", action=`/empleados/eliminar/${e._id}`, style="display:inline")
-                button.btn.btn-danger.btn-sm(type="submit") Eliminar
+            th Nombre
+            th Apellido
+            th DNI
+            th Teléfono
+            th Email
+            th Rol
+            th Área
+            th Acciones
+        tbody
+          each e in empleados
+            tr
+              td= e.nombre
+              td= e.apellido
+              td= e.dni
+              td= e.telefono
+              td= e.email
+              td= e.rol
+              td= e.area
+              td
+                a.btn.btn-warning.btn-sm(href=`/empleados/editar/${e._id}`) Editar
+                form(method="POST", action=`/empleados/eliminar/${e._id}`, style="display:inline")
+                  button.btn.btn-danger.btn-sm(type="submit") Eliminar

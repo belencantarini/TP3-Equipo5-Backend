@@ -1,21 +1,23 @@
 extends ../layout
 
 block content
-  .container.my-5
-    .row
-      .col-12
-        
-        h2.mb-4.text-primary Listado de Tareas
-        a.btn.btn-success.mb-4(href="/tareas/nuevo") + Nueva Tarea
-        
-        if error
-          .alert.alert-danger(role="alert")
-            | #{error}
-        
+  .container.mt-4
+
+  h2 Lista de Tareas
+
+
+  .text-end.mb-3
+    a.btn.btn-primary(href="/tareas/nuevo") Nueva Tarea
+  
+  if error
+    .alert.alert-danger(role="alert")
+    #{error}
+  
+          
         // -----------------------
         // 2. FORMULARIO DE FILTROS
         // -----------------------
-        h4.mb-3 Filtros
+  h4.mb-3 Filtros
         .card.p-3.mb-5
           
           form.row.g-3(action="/tareas", method="get")
@@ -80,9 +82,9 @@ block content
         h3.mb-3 Tareas Encontradas
 
         if tareas && tareas.length
-          .table-responsive
+          .table-responsive.d-none.d-md-block
             table.table.table-striped.table-hover.table-sm
-              thead.table-dark
+              thead
                 tr
                   th #ID
                   th Área
@@ -91,7 +93,7 @@ block content
                   th Prioridad
                   th Empleado
                   th Paciente
-                  th Acciones
+                  th.text-nowrap Acciones
               tbody
                 each t in tareas
                   tr
@@ -103,12 +105,46 @@ block content
                     // Nota: Aquí solo muestra el ID, deberías buscar el nombre en el backend para mejor UX
                     td= t.empleadoId || 'N/A'
                     td= t.pacienteId || 'N/A'
-                    td.d-flex.gap-2
-                    
+                    td
                       a.btn.btn-sm.btn-warning(href=`/tareas/editar/${t._id}`) Editar
-                      
-                      
                       form(action=`/tareas/eliminar/${t._id}?_method=DELETE`, method="post", style="display:inline")
                         button.btn.btn-sm.btn-danger(type="submit", onclick="return confirm('¿Está seguro de que desea eliminar esta tarea?')") Eliminar
+
+
+          .d-md-none
+            each t in tareas
+              .card.mb-3
+                .card-header 
+                  // Muestra el ID como título de la tarjeta
+                  strong Tarea ID: 
+                  | #{t._id}
+                .card-body
+                  // Lista de Definición (dt/dd) para mostrar los datos de forma vertical
+                  dl.row
+                    dt.col-5 Área:
+                    dd.col-7= t.area
+
+                    dt.col-5 Tipo:
+                    dd.col-7= t.tipo
+
+                    dt.col-5 Estado:
+                    // Usamos una badge (etiqueta) para que el estado destaque
+                    dd.col-7 
+                      span.badge.bg-primary= t.estado 
+
+                    dt.col-5 Prioridad:
+                    dd.col-7 
+                      span.badge(class=`${t.prioridad === 'Urgente' ? 'bg-danger' : 'bg-secondary'}`)= t.prioridad 
+
+                    dt.col-5 Empleado:
+                    dd.col-7= t.empleadoId || 'N/A'
+
+                    dt.col-5 Paciente:
+                    dd.col-7= t.pacienteId || 'N/A'
+
+                .card-footer.d-flex.gap-2.justify-content-end 
+                  a.btn.btn-sm.btn-warning(href=`/tareas/editar/${t._id}`) Editar
+                  form(action=`/tareas/eliminar/${t._id}?_method=DELETE`, method="post", style="display:inline")
+                    button.btn.btn-sm.btn-danger(type="submit", onclick="return confirm('¿Está seguro de que desea eliminar esta tarea?')") Eliminar
         else
           .alert.alert-info No hay tareas que coincidan con los filtros aplicados.

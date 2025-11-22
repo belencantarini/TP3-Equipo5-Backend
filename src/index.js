@@ -50,6 +50,11 @@ app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/dashboardRoutes'));
 
 // =========================
+//   CRUD API (Mongo)
+// =========================
+app.use('/api/tareasmongo', require('./routes/apiTareaMongoRoutes'));
+
+// =========================
 //   CRUD VISTAS (PUG + Mongo)
 // =========================
 app.use('/empleados', require('./routes/empleadoRoutes'));

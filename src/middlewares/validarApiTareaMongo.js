@@ -1,5 +1,5 @@
 const { leerData } = require('../lib/fs');  
-const Empleado = require('../models/EmpleadoMongo');
+const Empleado = require('../models/empleadoMongoModel');
 const Paciente = require('../models/pacienteMongoModel');
 
 
