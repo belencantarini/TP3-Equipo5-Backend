@@ -1,6 +1,6 @@
 const Paciente = require('../models/pacienteMongoModel');
 
-// 📋 Listar todos los pacientes
+//  Listar todos los pacientes
 exports.listarPacientes = async (req, res) => {
   try {
     const pacientes = await Paciente.find();
@@ -10,7 +10,7 @@ exports.listarPacientes = async (req, res) => {
   }
 };
 
-// 🔍 Obtener paciente por ID
+//  Obtener paciente por ID
 exports.obtenerPacientePorId = async (req, res) => {
   try {
     const paciente = await Paciente.findById(req.params.id);
@@ -21,7 +21,7 @@ exports.obtenerPacientePorId = async (req, res) => {
   }
 };
 
-// ➕ Crear paciente
+// Crear paciente
 exports.crearPaciente = async (req, res) => {
   try {
     const nuevoPaciente = new Paciente(req.body);
@@ -32,7 +32,7 @@ exports.crearPaciente = async (req, res) => {
   }
 };
 
-// ✏️ Actualizar paciente
+//  Actualizar paciente
 exports.actualizarPaciente = async (req, res) => {
   try {
     const pacienteActualizado = await Paciente.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -43,7 +43,7 @@ exports.actualizarPaciente = async (req, res) => {
   }
 };
 
-// ❌ Eliminar paciente
+//  Eliminar paciente
 exports.eliminarPaciente = async (req, res) => {
   try {
     const pacienteEliminado = await Paciente.findByIdAndDelete(req.params.id);

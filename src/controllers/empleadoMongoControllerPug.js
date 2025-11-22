@@ -1,4 +1,3 @@
-// controllers/empleadoMongoControllerPug.js
 const Empleado = require('../models/empleadoMongoModel');
 const bcrypt = require('bcrypt');
 const { leerData } = require('../lib/fs');

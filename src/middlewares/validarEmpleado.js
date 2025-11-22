@@ -26,9 +26,9 @@ function validarEmpleado(vista) {
 
     const formData = req.body;
 
-    /* ============================
+    /*
         VALIDACIONES BÁSICAS
-       ============================ */
+       */
 
     // NOMBRE
     if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/.test(nombre)) {
@@ -65,9 +65,9 @@ function validarEmpleado(vista) {
       error = `Área inválida. Debe ser una de: ${areas.join(', ')}`;
     }
 
-    /* ============================
+    /*
         VALIDACIÓN ÁREA ↔ ROL
-       ============================ */
+        */
 
     const reglas = {
       "Administración de Turnos": ["administrador", "recepcionista"],
@@ -80,9 +80,9 @@ function validarEmpleado(vista) {
       error = `El rol "${rol}" no está permitido para el área "${area}".`;
     }
 
-    /* ============================
+    /* 
         DNI DUPLICADO (solo editar)
-       ============================ */
+      */
 
     if (!error && vista === "editar") {
       const repetido = empleados.some(
@@ -91,9 +91,9 @@ function validarEmpleado(vista) {
       if (repetido) error = "DNI registrado previamente.";
     }
 
-    /* ============================
+    /* 
         SI HAY ERROR → VOLVER A FORM
-       ============================ */
+       */
     if (error) {
       return res.render(url, {
         titulo,

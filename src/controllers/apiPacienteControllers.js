@@ -1,7 +1,7 @@
 const { leerData, escribirData } = require('../lib/fs');
 const Paciente = require('../models/Paciente'); // Modelo basado en FS (JSON)
 
-// 📋 Listar todos los pacientes (FS)
+//  Listar todos los pacientes (FS)
 async function listarPacientes(req, res) {
     try {
         const pacientes = await leerData("pacientes");
@@ -11,7 +11,7 @@ async function listarPacientes(req, res) {
     }
 }
 
-// 🔍 Obtener paciente por ID
+//  Obtener paciente por ID
 async function obtenerPaciente(req, res) {
     try {
         const { id } = req.params;
@@ -28,7 +28,7 @@ async function obtenerPaciente(req, res) {
     }
 }
 
-// ➕ Crear paciente
+//  Crear paciente
 async function crearPaciente(req, res) {
     try {
         const { nombre, apellido, dni, telefono, email, obraSocial } = req.body;
@@ -59,7 +59,7 @@ async function crearPaciente(req, res) {
     }
 }
 
-// ✏️ Actualizar paciente
+//  Actualizar paciente
 async function actualizarPaciente(req, res) {
     try {
         const { id } = req.params;
@@ -90,7 +90,7 @@ async function actualizarPaciente(req, res) {
     }
 }
 
-// ❌ Eliminar paciente
+//  Eliminar paciente
 async function eliminarPaciente(req, res) {
     try {
         const { id } = req.params;

@@ -1,4 +1,3 @@
-// src/controllers/apiPacienteMongoController.js
 const Paciente = require('../models/pacienteMongoModel');
 
 async function listar(req, res) {

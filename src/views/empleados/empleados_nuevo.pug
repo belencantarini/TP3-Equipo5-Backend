@@ -64,9 +64,9 @@ block content
           value=formData && formData.email ? formData.email : ""
         )
 
-      // -----------------------
+      // 
       // SELECT ÁREA
-      // -----------------------
+      // 
       .mb-3
         label.form-label Área
         select.form-select(name="area" id="areaSelect" required)
@@ -77,9 +77,9 @@ block content
               selected=(formData && formData.area === a)
             )= a
 
-      // -----------------------
+      // 
       // SELECT ROL (DINÁMICO)
-      // -----------------------
+      // 
       .mb-3
         label.form-label Rol
         select.form-select(name="rol" id="rolSelect" required)
@@ -102,9 +102,9 @@ block content
         a.btn.btn-secondary(href="/empleados") Volver
         button.btn.btn-primary(type="submit") Guardar
 
-  // -----------------------
+  // 
   // SCRIPT PARA ROLES DINÁMICOS
-  // -----------------------
+  //
   script.
     const rolesDisponibles = {
       "Administración de Turnos": ["administrador", "recepcionista"],

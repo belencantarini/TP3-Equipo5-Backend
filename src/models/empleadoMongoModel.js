@@ -9,7 +9,7 @@ const empleadoSchema = new mongoose.Schema({
   direccion: { type: String },
   rol: { type: String, required: true },
   area: { type: String, required: true },
-  password: { type: String, required: true },   // 👈 NECESARIO PARA LOGIN
+  password: { type: String, required: true },   // NECESARIO PARA LOGIN
   activo: { type: Boolean, default: true }
 }, { timestamps: true });
 

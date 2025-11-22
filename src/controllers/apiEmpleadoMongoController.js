@@ -1,4 +1,3 @@
-// src/controllers/apiEmpleadoMongoController.js
 const Empleado = require('../models/empleadoMongoModel');
 
 async function listar(req, res) {
