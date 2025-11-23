@@ -169,10 +169,10 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 * Crea el archivo **`.env`** en la raíz del proyecto.
 * Copia la siguiente estructura y reemplaza los valores por tu URI de MongoDB Atlas:
 
-Ejemplo de .env
+> Ejemplo de .env
     ```bash
-    PORT=5000
-    MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd> 
+    > PORT=5000
+    > MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd> 
     ```
 
 ### 3. Creación del Usuario Administrador
