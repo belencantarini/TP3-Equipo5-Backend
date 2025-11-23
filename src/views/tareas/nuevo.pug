@@ -6,17 +6,16 @@ block content
     .row
       .col-12
 
-        // 2. Quitar 'tareasmongo' de la acción del formulario
+       
         form.row.g-3(action="/tareas/nuevo", method="post")
           
-          // COLUMNA 1: ÁREA Y TIPO
+          
           .col-md-6
             .form-group.mb-3
               label.form-label(for="area") Área: 
               select#area.form-select(name="area", required)
                 option(value="" disabled selected) Seleccione un área
                 each a in areas
-                  // Usar 'selected=(tarea && tarea.area == a)' sin ternario largo si es posible
                   option(value=a, selected=(tarea && tarea.area == a))= a
 
           .col-md-6
@@ -25,13 +24,11 @@ block content
               select#tipoTarea.form-select(name="")
                 option(value="" selected) Seleccione un tipo
               
-              // Input para el tipo "Otro" con clase Bootstrap y margen
+              
               input#otroTipo.form-control.mt-2(type="text", placeholder="Escribe el tipo aquí", style="display:none;")
-              // Input oculto que contendrá el valor final
               input#tipo(type="hidden", name="tipo", value=(tarea && tarea.tipo) ? tarea.tipo : "")
 
 
-          // COLUMNA 2: ESTADO Y PRIORIDAD
           .col-md-6
             .form-group.mb-3
               label.form-label(for="estado") Estado:
@@ -48,7 +45,6 @@ block content
                 each pri in prioridades 
                   option(value=pri, selected=(tarea && tarea.prioridad == pri))= pri  
 
-          // COLUMNA 3: FECHAS
           .col-md-6
             .form-group.mb-3
               label.form-label(for="fechaInicio") Fecha Inicio (opcional)
@@ -67,7 +63,6 @@ block content
                 value=(tarea && tarea.fechaFin) ? new Date(tarea.fechaFin).toISOString().slice(0,16) : ""
               )
 
-          // COLUMNA 4: REFERENCIAS (Empleados y Pacientes)
           .col-md-6
             .form-group.mb-3
               label.form-label(for="empleadoId") Empleado (opcional)
@@ -86,51 +81,44 @@ block content
                   const isSelected = tarea && ((typeof tarea.pacienteId === 'object' && tarea.pacienteId._id.toString() === p._id.toString()) || (typeof tarea.pacienteId === 'string' && tarea.pacienteId === p._id.toString()));
                   option(value=p._id, selected=isSelected  ? true : false) #{p.nombre} #{p.apellido} - DNI: #{p.dni}
 
-          // FILA COMPLETA: PROVEEDOR
           .col-12
             .form-group.mb-3
               label.form-label(for="proveedor") Proveedor (opcional)
               textarea#proveedor.form-control(name="proveedor", placeholder="Detalles del proveedor")= (tarea && tarea.proveedor) ? tarea.proveedor : ""
             
-          // FILA COMPLETA: OBSERVACIONES
+    
           .col-12
             .form-group.mb-3
               label.form-label(for="observaciones") Observaciones (opcional)
               textarea#observaciones.form-control(name="observaciones", placeholder="Observaciones")= (tarea && tarea.observaciones) ? tarea.observaciones : ""
-            
-          // BOTONES
+
           .col-12.text-end.mt-3
             a.btn.btn-secondary.me-2(href="/tareas") Volver
             button.btn.btn-primary(type="submit") Guardar
 
-  // MANTENER EL SCRIPT DE LÓGICA DE ROLES
+
+  // SCRIPT DE LÓGICA DE ROLES
   script.
     document.addEventListener('DOMContentLoaded', function() {
         const areaSelect = document.getElementById('area');
         const tipoSelect = document.getElementById('tipoTarea');
         const otroTipoInput = document.getElementById('otroTipo');
         const tipoHiddenInput = document.getElementById('tipo');
-        
-        // CORRECCIÓN: Usar el valor existente de tarea.area al cargar la página
         const initialArea = areaSelect.value;
         const initialTipo = tipoHiddenInput.value;
-        
-        // Esta variable se pasa desde el controlador
         const tiposValidosPorArea = !{JSON.stringify(tiposValidosPorArea)}; 
 
-        // Función para poblar el select de tipos
         const updateTipoSelect = (selectedArea, selectedTipo = '') => {
             const tipos = tiposValidosPorArea[selectedArea] || [];
             tipoSelect.innerHTML = '<option value="" selected>Seleccione un tipo</option>';
             otroTipoInput.style.display = 'none';
             otroTipoInput.value = '';
-            tipoHiddenInput.value = ''; // Se actualizará al final si hay un tipo seleccionado
+            tipoHiddenInput.value = '';
 
             tipos.forEach(tipo => {
                 const option = document.createElement('option');
                 option.value = tipo;
                 option.textContent = tipo;
-                // Mantener el tipo seleccionado si existe
                 if (selectedTipo === tipo) {
                     option.selected = true;
                 }
@@ -141,7 +129,6 @@ block content
             otroOption.value = "Otro";
             otroOption.textContent = "Otro";
             
-            // Lógica para preseleccionar "Otro" si el tipo no está en la lista de tiposValidosPorArea
             const isCustomType = selectedTipo && !tipos.includes(selectedTipo);
             if (isCustomType) {
                 otroOption.selected = true;
@@ -149,28 +136,22 @@ block content
                 otroTipoInput.value = selectedTipo;
                 tipoHiddenInput.value = selectedTipo;
             } else if (selectedTipo && tipos.includes(selectedTipo)) {
-                 // Si el tipo es válido, asegúrate de que el hidden input lo tenga al cargar
                 tipoHiddenInput.value = selectedTipo;
             } else if (tipoSelect.value !== '') {
-                 // Si hay un tipo válido preseleccionado, usa ese valor
                 tipoHiddenInput.value = tipoSelect.value;
             }
 
             tipoSelect.appendChild(otroOption);
         };
         
-        // Ejecutar al inicio para manejar la precarga de datos (útil en edición o error de validación)
         if (initialArea) {
             updateTipoSelect(initialArea, initialTipo); 
         }
 
-        // Lógica de cambio de Área
         areaSelect.addEventListener('change', function() {
-            // Al cambiar el área, borramos la selección anterior
             updateTipoSelect(this.value);
         });
 
-        // Lógica de cambio de Tipo
         tipoSelect.addEventListener('change', function() {
             if (this.value === 'Otro') {
                 otroTipoInput.style.display = 'block';
@@ -184,15 +165,11 @@ block content
             }
         });
 
-        // Sincronizar input 'Otro' con el campo oculto
         otroTipoInput.addEventListener('input', function() {
             tipoHiddenInput.value = this.value;
         });
 
-        // Asegurar que el input oculto de tipo tenga el valor inicial si viene de la DB (edición o error)
         if (initialTipo && initialArea && !document.querySelector('#tipoTarea option[value="' + initialTipo + '"]:checked')) {
-            // Si hay un tipo inicial y no está en la lista de opciones válidas (es 'Otro'), se maneja arriba.
-            // Si está en la lista, se asegura aquí:
             tipoHiddenInput.value = initialTipo;
         }
 

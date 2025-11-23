@@ -14,9 +14,8 @@ block content
     #{error}
   
           
-        // -----------------------
-        // 2. FORMULARIO DE FILTROS
-        // -----------------------
+        // FORMULARIO DE FILTROS
+
   h4.mb-3 Filtros
         .card.p-3.mb-5
           
@@ -69,35 +68,31 @@ block content
 
             // BOTONES DE FILTRO
             .col-12.d-flex.gap-2.mt-3
-              button.btn.btn-primary(type="submit") 🔎 Filtrar
-              // 4. Quitar 'tareasmongo' del botón de limpiar
+              button.btn.btn-primary(type="submit")  Filtrar
               button.btn.btn-outline-secondary(type="button", onclick="location.href='/tareas'") Limpiar filtros
         
-        // -----------------------
-        // 5. LISTADO (Tabla)
-        // -----------------------
+
+        
+  // LISTADO DE TAREAS
         
   h2 Tareas Encontradas
 
     if tareas && tareas.length
       each t in tareas
         .card.mb-4.mt-2.shadow-sm 
-          .card-header.d-flex.justify-content-between.align-items-center
+          .card-header.d-md-flex.justify-content-between.align-items-md-center
             div
               h3.fw-bold Tarea ID: #{t._id}
-            div
-              // Prioridad con Badge
+            div.mt-2.mt-md-0
               - let badgeClass = t.prioridad === 'alta' || t.prioridad === 'urgente' ? 'bg-danger' : t.prioridad === 'media' ? 'bg-warning text-dark' : 'bg-success';
               span.badge.me-2.fs-6(class=badgeClass) Prioridad: #{t.prioridad}
-              // Estado
               span.badge.bg-primary.fs-6 Estado: #{t.estado}
 
           .card-body.fs-5
             .row
               
-              // COLUMNA IZQUIERDA (Datos principales)
               .col-lg-6.col-12.border-end-lg 
-                h4.card-title Datos Principales
+                
                 dl.row.mb-0
                   dt.col-5 Área:
                   dd.col-7= t.area
@@ -112,11 +107,10 @@ block content
                   dd.col-7
                     span.badge(class=`${t.activo ? 'bg-success' : 'bg-secondary'}`)= t.activo ? 'Sí' : 'No'
 
-              // COLUMNA DERECHA (Referencias y Fechas)
               .col-lg-6.col-12
-                h4.card-title Referencias y Tiempos
+                
                 dl.row.mb-0
-                  // Empleado (Poblado)
+
                   dt.col-5 Empleado:
                   dd.col-7
                     if t.empleadoId
@@ -124,7 +118,6 @@ block content
                     else
                       | N/A
 
-                  // Paciente (Poblado)
                   dt.col-5 Paciente:
                   dd.col-7
                     if t.pacienteId
@@ -140,7 +133,6 @@ block content
             
             hr.my-3 
 
-            // OBSERVACIONES (Ancho Completo)
             h4.card-title Observaciones
             p.card-text.small= t.observaciones || 'No hay observaciones.'
 
