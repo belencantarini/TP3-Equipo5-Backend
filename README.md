@@ -45,7 +45,6 @@ El desarrollo se realizó en entregas progresivas:
 
 El sistema utiliza una estructura clara basada en el patrón **MVC**
 
-
 ---
 
 ### 🔧 Tecnologías utilizadas
@@ -57,6 +56,19 @@ El sistema utiliza una estructura clara basada en el patrón **MVC**
 * `method-override`
 * `dotenv`
 * JSON para persistencia complementaria
+
+---
+## 📡 Conexión a MongoDB
+
+* Configurada en: `src/index.js`
+* Incluye manejo de errores y *logs*.
+
+---
+
+## 📎 Repositorio y Despliegue del Proyecto
+
+* 👉 https://github.com/belencantarini/TP3-Equipo5-Backend
+* 👉 https://tp3-equipo5-backend.onrender.com
 
 ---
 
@@ -158,8 +170,10 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 * Copia la siguiente estructura y reemplaza los valores por tu URI de MongoDB Atlas:
 
 Ejemplo de .env
-PORT=5000
-MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd> 
+    ```bash
+    PORT=5000
+    MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd> 
+    ```
 
 ### 3. Creación del Usuario Administrador
 
@@ -181,15 +195,47 @@ MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd>
 * Accede al sistema en tu navegador: `http://localhost:5000`
 
 ---
+## 🛠️ Ejecución en la Web
 
-## 📡 Conexión a MongoDB
+Sigue estos pasos para acceder al sitio web y también probar la API del proyecto que ha sido desplegada en la nube con Render.
 
-* Configurada en: `src/index.js`
-* Incluye manejo de errores y *logs*.
+### 1. Acceso al Despliegue
 
+El sitio web para la navegación y el *backend* de la API ya están operativos y se pueden acceder a través de la siguiente URL:
+
+👉 **URL Base:** `https://tp3-equipo5-backend.onrender.com`  
+_(Esta URL sirve para su acceso en el navegador y como prefijo para todas las rutas de la API para su prueba en Postman, por ejemplo: `/api/tareasmongo` o `/api/empleados`)._
+
+
+### 2. Credenciales de Acceso (Por Defecto)
+
+Para acceder a las secciones de la aplicación que requieren autenticación (como el *dashboard* y las vistas de administración), utiliza las siguientes credenciales preconfiguradas:
+
+| Campo | Valor |
+| :--- | :--- |
+| **Email** | `admin@clinica.com` |
+| **Password** | `admin123` |
+
+
+### 3. Navegación en la URL
+
+Una vez que se accede al URL, el servidor te redireccionará automáticamente a la página de inicio de sesión en donde se ingresan las credenciales. Una vez que inicies sesión, el servidor te enviará la cookie de sesión que tu navegador guardará, redireccionando a la página del Dashboard y de ahí a cada una de las secciones al cual el usuario tenga acceso.
+
+
+### 4. 🔗 Rutas Clave de la API
+
+Utilizando la URL base en herramientas como Postman, puedes realizar la autenticación con las credenciales correspondiente, puedes interactuar con los siguientes puntos de acceso (endpoints) principales de la API:
+
+* **API Tareas (Mongo):** `/api/tareasmongo`  
+* **API Pacientes (Mongo):** `/api/pacientes`  
+* **API Empleados (Mongo):** `/api/empleados`  
+* **API Insumos (Mongo):** `/api/insumos`  
+
+
+---
 ## 🧪 Pruebas realizadas
 
-* Pruebas ejecutadas con **Thunder Client**, incluyendo:
+* Pruebas ejecutadas con **Thunder Client** y **Postman**, incluyendo:
     * CRUD Pacientes
     * CRUD Empleados
     * CRUD Tareas (MongoDB)
@@ -216,12 +262,7 @@ El video mostrará:
 * Mejoras aplicadas desde TP1 hasta TP3
 * (Se agregará el enlace cuando esté disponible.)
 
----
 
-## 📎 Repositorio y Despliegue del Proyecto
-
-* 👉 https://github.com/belencantarini/TP3-Equipo5-Backend
-* 👉 https://tp3-equipo5-backend.onrender.com
 
 ## 💬 Notas finales
 
