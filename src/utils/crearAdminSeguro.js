@@ -32,14 +32,14 @@ async function crearAdmin() {
 
     await nuevo.save();
 
-    console.log("✅ Admin creado con éxito:");
+    console.log("Admin creado con éxito:");
     console.log("- Email: admin@clinica.com");
     console.log("- Password: admin123");
 
     process.exit();
 
   } catch (err) {
-    console.error("❌ Error creando admin:", err.message);
+    console.error("Error creando admin:", err.message);
     process.exit();
   }
 }
