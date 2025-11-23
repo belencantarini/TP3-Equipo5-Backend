@@ -152,6 +152,43 @@ La portada funciona como un panel administrativo con:
  * Diseño consistente con las demás tarjetas (Pacientes, Empleados, Tareas)
 
 ---
+## Módulos desarrollados por Damian Marcelo Gomez De Leo
+ 
+ ### Tareas
+ 
+ **Funcionalidades**
+ 
+* Controladores y Rutas CRUD:  Desarrollo de la lógica principal (*controllers*) para la gestión completa (Crear, Leer, Actualizar, Eliminar) del módulo de Tareas  y la adaptación de la routas (*routes*).
+* Lógica de Filtros: Implementación de la lógica de consulta a MongoDB para procesar los **filtros de búsqueda** solicitados.
+* Integridad de Datos: Manejo de la lógica de **Populate** para asegurar que los datos de Empleados y Pacientes se carguen correctamente dentro de la tarea.
+
+ **Mejoras incorporadas**
+ 
+* Autenticación y Sesiones: Adaptación de la lógica de **inicio y cierre de sesión** y la gestión de la **sesión de usuario** en Express.
+* Autorización de Rutas: Implementación de *middleware* para proteger las rutas, asegurando que solo los usuarios autenticados y autorizados puedan acceder a las vistas y funcionalidades.
+* Validaciones: Aplicación de **validaciones de campos** en el servidor para proteger la base de datos de datos incorrectos o maliciosos.
+* Adaptación de Vistas: Garantizó que las plantillas se adaptaran correctamente a los cambios en el estado de la sesión y las restricciones de acceso.
+
+---
+
+## Módulos desarrollados por Maria Belen Cantarini Echezarreta
+ 
+### Tareas
+
+**Funcionalidades**
+
+* Listado y Filtros:  Implementación del diseño final de la vista de listado y la integración visual de los **filtros múltiples** (Área, Empleado, Estado, Prioridad, Fecha).
+* Forms Dinámicos: Configuración de la lógica PUG para la carga dinámica de datos en los formularios de **Creación y Edición** (listados de empleados y pacientes).
+* Ejecución de API: Verificación y soporte en el correcto funcionamiento de los *endpoints* de la API en el entorno desplegado.
+
+**Mejoras incorporadas**
+
+* Diseño con Cards: Reestructuración completa del listado de tareas utilizando el diseño de *Cards* para una visualización de detalles más clara y organizada.
+* Adaptación a Múltiples Dispositivos: Garantía de la **funcionalidad y estética responsive** de las vistas de Tareas en pantallas móviles, tabletas y escritorio.
+* Estilos de Identificación: Aplicación de *badges* y clases de Bootstrap para identificar visualmente la **Prioridad** (ej. rojo para urgencia) y el **Estado** de cada tarea de forma inmediata.
+* Consistencia Visual: Aseguró que los formularios y las listas mantuvieran la uniformidad de estilos con el resto del sistema.
+
+---
 
 ## 🛠️ Instalación y Ejecución Local
 
@@ -169,11 +206,12 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 * Crea el archivo **`.env`** en la raíz del proyecto.
 * Copia la siguiente estructura y reemplaza los valores por tu URI de MongoDB Atlas:
 
-> Ejemplo de .env
-    ```bash
-    > PORT=5000
-    > MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd> 
-    ```
+<br> Ejemplo de .env  
+
+```bash
+PORT=5000
+MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd>
+```
 
 ### 3. Creación del Usuario Administrador
 
