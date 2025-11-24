@@ -1,4 +1,4 @@
-# 🏥 TP3 – Backend: Sistema de Gestión Clínica Integral
+#  TP3 – Backend: Sistema de Gestión Clínica Integral
 
 **Comisión IFST29 – Grupo 5 | Año: 2025**
 
@@ -6,22 +6,22 @@ Este proyecto corresponde al Tercer Parcial de Desarrollo Web Backend. Se desarr
 
 ---
 
-## ⭐ Evolución del Proyecto
+##  Evolución del Proyecto
 
 El desarrollo se realizó en entregas progresivas:
 
-* ✔ **TP1 – Base del proyecto**
+*  **TP1 – Base del proyecto**
     * Configuración inicial con Node.js y Express
     * Rutas básicas
     * CRUD con archivos JSON
     * Primeros controladores y modelos
-* ✔ **TP2 – Integración con MongoDB**
+*  **TP2 – Integración con MongoDB**
     * Migración gradual a MongoDB
     * Modelos Mongoose
     * Validaciones de datos
     * Incorporación de APIs
     * Primeras vistas dinámicas
-* ✔ **TP3 – Versión Final**
+*  **TP3 – Versión Final**
     * Vistas Pug reorganizadas y mejoradas
     * Dashboard con estadísticas reales
     * Formularios con diseño clínico
@@ -32,22 +32,22 @@ El desarrollo se realizó en entregas progresivas:
 
 ---
 
-## 👥 Integrantes
+##  Integrantes
 
 * **Gabriela Aguilera** – Módulos Pacientes y Empleados, validaciones, rediseño de vistas y mejoras generales de interfaz.
 * **Belén Cantarini Echezarreta** – Módulo Tareas y documentación del proyecto.
-* **Damián Gómez De Leo** – Módulo Insumos y desarrollo de API complementaria.
-* **Emiliano Núñez** – Conexión a MongoDB Atlas, rutas avanzadas y pruebas.
+* **Damián Gómez De Leo** – Módulo Tareas y desarrollo de API complementaria.
+* **Emiliano Núñez** – Conexión a MongoDB Atlas, Módulo de Insumos, rutas avanzadas y pruebas.
 
 ---
 
-## 🏗 Arquitectura del Proyecto
+##  Arquitectura del Proyecto
 
 El sistema utiliza una estructura clara basada en el patrón **MVC**
 
 ---
 
-### 🔧 Tecnologías utilizadas
+###  Tecnologías utilizadas
 
 * Node.js + Express
 * MongoDB + Mongoose
@@ -58,25 +58,25 @@ El sistema utiliza una estructura clara basada en el patrón **MVC**
 * JSON para persistencia complementaria
 
 ---
-## 📡 Conexión a MongoDB
+##  Conexión a MongoDB
 
 * Configurada en: `src/index.js`
 * Incluye manejo de errores y *logs*.
 
 ---
 
-## 📎 Repositorio y Despliegue del Proyecto
+##  Repositorio y Despliegue del Proyecto
 
-* 👉 https://github.com/belencantarini/TP3-Equipo5-Backend
-* 👉 https://tp3-equipo5-backend.onrender.com
+*  https://github.com/belencantarini/TP3-Equipo5-Backend
+*  https://tp3-equipo5-backend.onrender.com
 
 ---
 
-## 👩‍⚕️ Módulos desarrollados por Gabriela Aguilera
+##  Módulos desarrollados por Gabriela Aguilera
 
-### 🩺 Pacientes
+###  Pacientes
 
-✔ **Funcionalidades**
+ **Funcionalidades**
 * Listado completo
 * Creación de pacientes
 * Edición
@@ -84,7 +84,7 @@ El sistema utiliza una estructura clara basada en el patrón **MVC**
 * Validaciones de campos
 * Modelo Mongoose + persistencia JSON
 
-✔ **Mejoras incorporadas**
+ **Mejoras incorporadas**
 * Diseño limpio y responsive
 * Formularios modernos con campos bien distribuidos
 * Botón “Volver” unificado
@@ -92,9 +92,9 @@ El sistema utiliza una estructura clara basada en el patrón **MVC**
 * Interfaz con colores clínicos (celeste/blanco)
 * Código más ordenado y semántico
 
-### 👤 Empleados
+###  Empleados
 
-✔ **Funcionalidades**
+ **Funcionalidades**
 * Listado general del personal
 * Alta de empleados
 * Edición de datos
@@ -102,14 +102,14 @@ El sistema utiliza una estructura clara basada en el patrón **MVC**
 * Validaciones en *middleware*
 * Modelo Mongoose + archivo JSON auxiliar
 
-✔ **Mejoras incorporadas**
+ **Mejoras incorporadas**
 * Formularios más claros
 * Diseño uniforme con el módulo Pacientes
 * Botones y estilos consistentes
 * Tablas responsivas
 * Corrección de campos y estructura visual
 
-### 📊 Dashboard (Portada)
+###  Dashboard (Portada)
 
 La portada funciona como un panel administrativo con:
 * Tarjetas de estadísticas (empleados, pacientes y tareas activas)
@@ -138,8 +138,8 @@ La portada funciona como un panel administrativo con:
 * Diseño unificado (igual a los otros módulos)
 * Formularios claros con botón “Volver” y estilos consistentes
 * Tablas estilizadas con colores de alerta:
-* 🔴 Agotados → table-danger
-* 🟡 Vencidos → table-warning
+*  Agotados → table-danger
+*  Vencidos → table-warning
 * Integración visual coherente con el resto del sistema
 * Código ordenado y semántico, adaptado a MongoDB
 
@@ -190,7 +190,7 @@ La portada funciona como un panel administrativo con:
 
 ---
 
-## 🛠️ Instalación y Ejecución Local
+##  Instalación y Ejecución Local
 
 Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local.
 
@@ -220,7 +220,7 @@ MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd>
     node src/utils/crearAdminSeguro.js
     ```
 
-> 🔐 **Credenciales por Defecto:**
+>  **Credenciales por Defecto:**
 > * **Email:** `admin@clinica.com`
 > * **Password:** `admin123`
 
@@ -233,7 +233,7 @@ MONGO_URI=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<nombre-de-la-bd>
 * Accede al sistema en tu navegador: `http://localhost:5000`
 
 ---
-## 🛠️ Ejecución en la Web
+##  Ejecución en la Web
 
 Sigue estos pasos para acceder al sitio web y también probar la API del proyecto que ha sido desplegada en la nube con Render.
 
@@ -241,7 +241,7 @@ Sigue estos pasos para acceder al sitio web y también probar la API del proyect
 
 El sitio web para la navegación y el *backend* de la API ya están operativos y se pueden acceder a través de la siguiente URL:
 
-👉 **URL Base:** `https://tp3-equipo5-backend.onrender.com`  
+ **URL Base:** `https://tp3-equipo5-backend.onrender.com`  
 _(Esta URL sirve para su acceso en el navegador y como prefijo para todas las rutas de la API para su prueba en Postman, por ejemplo: `/api/tareasmongo` o `/api/empleados`)._
 
 
@@ -271,7 +271,7 @@ Utilizando la URL base en herramientas como Postman, puedes realizar la autentic
 
 
 ---
-## 🧪 Pruebas realizadas
+##  Pruebas realizadas
 
 * Pruebas ejecutadas con **Thunder Client** y **Postman**, incluyendo:
     * CRUD Pacientes
@@ -282,7 +282,7 @@ Utilizando la URL base en herramientas como Postman, puedes realizar la autentic
 
 ---
 
-## 📘 Bibliografía
+##  Bibliografía
 
 * Documentación de Node.js
 * Express.js
@@ -290,7 +290,7 @@ Utilizando la URL base en herramientas como Postman, puedes realizar la autentic
 * Bootstrap 5
 * Material teórico de la cátedra
 
-## 🎥 Video de Defensa
+##  Video de Defensa
 
 El video mostrará:
 * Arquitectura del proyecto
@@ -302,7 +302,7 @@ El video mostrará:
 
 
 
-## 💬 Notas finales
+##  Notas finales
 
 El sistema cumple con:
 * Patrón MVC
